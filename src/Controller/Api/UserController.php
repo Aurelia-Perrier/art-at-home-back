@@ -31,16 +31,6 @@ class UserController extends AbstractController
         // setting an empty array
         $data = [];
 
-        // setting a string depending on the role and return this string
-        if (implode(',', $user->getRoles()) == 'ROLE_ARTIST') {
-            $role = 'Artiste';
-        } else if (implode(',', $user->getRoles()) == 'ROLE_ADMIN') {
-            $role = 'Administrateur';
-        } else {
-            $role = 'Modérateur';
-        }
-
-
         //fetching information about logged user
         $nickname = $user->getNickname();
         $firstname = $user->getFirstname();
@@ -49,6 +39,7 @@ class UserController extends AbstractController
         $avatar = $user->getAvatar();
         $presentation = $user->getPresentation();
         $dateOfBirth = $user->getDateOfBirth();
+        $role = $user->getRoles();
 
         //fetching exhibitions of user
         $exhibitionFetched = $user->getExhibition();
@@ -141,7 +132,7 @@ class UserController extends AbstractController
 
         //hashing the password
         $user->setPassword($passwordHasher->hashPassword($user, $user->getPassword()));
-        
+
         //Saving the entity and saving in DBB
         $entityManager = $doctrine->getManager();
         $entityManager->persist($user);
