@@ -108,9 +108,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $presentation;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Artwork::class, mappedBy="favorites")
+     */
+    private $favorites;
+
     public function __construct()
     {
         $this->exhibition = new ArrayCollection();
+        $this->favorites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -312,6 +318,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPresentation(?string $presentation): self
     {
         $this->presentation = $presentation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Artwork>
+     */
+    public function getFavorites(): Collection
+    {
+        return $this->favorites;
+    }
+
+    public function addFavorite(Artwork $favorite): self
+    {
+        if (!$this->favorites->contains($favorite)) {
+            $this->favorites[] = $favorite;
+            $favorite->addFavorite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavorite(Artwork $favorite): self
+    {
+        if ($this->favorites->removeElement($favorite)) {
+            $favorite->removeFavorite($this);
+        }
 
         return $this;
     }

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ArtworkRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -17,7 +19,7 @@ class Artwork
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"get_artwork_by_exhibition"})
+     * @Groups({"get_artwork_by_exhibition", "get_exhibitions_collection" })
      */
     private $id;
 
@@ -62,9 +64,15 @@ class Artwork
      */
     private $exhibition;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="favorites")
+     */
+    private $favorites;
+
     public function __construct()
     {
         $this->status = false;
+        $this->favorites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -140,6 +148,30 @@ class Artwork
     public function setExhibition(?Exhibition $exhibition): self
     {
         $this->exhibition = $exhibition;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getFavorites(): Collection
+    {
+        return $this->favorites;
+    }
+
+    public function addFavorite(User $favorite): self
+    {
+        if (!$this->favorites->contains($favorite)) {
+            $this->favorites[] = $favorite;
+        }
+
+        return $this;
+    }
+
+    public function removeFavorite(User $favorite): self
+    {
+        $this->favorites->removeElement($favorite);
 
         return $this;
     }

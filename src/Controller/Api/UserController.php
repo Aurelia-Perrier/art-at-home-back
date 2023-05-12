@@ -210,4 +210,25 @@ class UserController extends AbstractController
             ['groups' => 'get_user']
         );
     }
+
+    /**
+     * Get all favorites of logged user
+     *
+     * @Route ("api/secure/user/{id}/favorites", name="app_api_user_favorites", requirements={"id"="\d+"}, methods={"GET"})
+     */
+    public function getFavoritesByUserId()
+    {
+        // getting the logged user
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+
+        $favorites = $user->getFavorites();
+        
+        return $this->json(
+            $favorites,
+            Response::HTTP_OK,
+            [],
+            ['groups' => 'get_artwork']
+        );
+    }
 }
