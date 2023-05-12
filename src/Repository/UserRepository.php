@@ -71,4 +71,19 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getOneOrNullResult();
     }
 
+    /**
+     * Get all users with ROLE_ARTIST
+     * @return User[]
+     */
+    public function getUserWithRoleArtist()
+    {
+        return $this->createQueryBuilder('u')
+        ->where('u.roles LIKE :role')
+        ->setParameter('role', '%"'.'ROLE_ARTIST'.'"%')
+        ->orderBy('u.lastname', 'ASC')
+        ->getQuery()
+        ->getResult();
+
+    }
+
 }

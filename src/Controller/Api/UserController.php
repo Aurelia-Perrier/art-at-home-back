@@ -142,8 +142,6 @@ class UserController extends AbstractController
         return $this->json(
             [],
             Response::HTTP_CREATED,
-            [],
-            ['groups' => 'get_user']
         );
     }
 
@@ -208,7 +206,7 @@ class UserController extends AbstractController
      *
      * @Route ("api/secure/user/favorites", name="app_api_user_favorites", methods={"GET"})
      */
-    public function getFavoritesByUserId() : Response
+    public function getFavoritesByUser() : Response
     {
         // getting the logged user
         /** @var \App\Entity\User $user */
@@ -280,5 +278,23 @@ class UserController extends AbstractController
     public function removeFavorites()
     {
         // Pour Mathieu
+    }
+
+    /**
+     * Get all artists
+     *
+     * @Route ("api/artists", name="app_api_artists", methods={"GET"})
+     */
+    public function getArtists(UserRepository $userRepository) : Response
+    {
+
+        $artists = $userRepository->getUserWithRoleArtist();
+
+        return $this->json(
+            $artists,
+            Response::HTTP_OK,
+            [],
+            ['groups' => 'get_user']
+        );
     }
 }
