@@ -18,6 +18,7 @@
             <th>Fin de l'exposition</th>
             <th>Statut</th>
             <th style="width:40rem">Description</th>
+            <th>Artiste</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -32,6 +33,13 @@
             {% else %}
             <td style="text-align: justify;">{{ exhibition.description }}</td>
             {% endif %}
+            {% if exhibition.artist.nickname is same as(null)%}
+            <td>{{exhibition.artist.getFullName}}</td>
+            {% else %}
+            <td>{{ exhibition.artist.nickname}}</td>
+               
+            {% endif %}
+            
 
             <td>
                 <a href="{{ path('app_exhibition_show', {'id': exhibition.id}) }}"

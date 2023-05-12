@@ -287,9 +287,10 @@ class UserController extends AbstractController
      */
     public function getArtists(UserRepository $userRepository) : Response
     {
-
+        //fetch all users with role = ROLE_ARTIST
         $artists = $userRepository->getUserWithRoleArtist();
 
+        //return status 200
         return $this->json(
             $artists,
             Response::HTTP_OK,

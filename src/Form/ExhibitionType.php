@@ -42,7 +42,7 @@ class ExhibitionType extends AbstractType
                 {
                     if($user->getNickname() === null){
 
-                        return $user->getFirstname().' '.$user->getLastname();
+                        return $user->getFullName();
                     }
                     
                     return $user->getNickname();
