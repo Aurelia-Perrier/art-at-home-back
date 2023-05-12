@@ -51,7 +51,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\Regex(
      * pattern= "/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+.]{8,}$/",
      * message= "Le mot de passe doit contenir au moins 8 caractères, dont une majuscule, un chiffre et un caractère spécial.")
-     * @Groups({"get_user"})
      */
     private $password;
 
@@ -60,7 +59,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
      * @Assert\NotBlank(groups={"registration"})
      * @Assert\Regex("/^[a-zA-ZÀ-úÀ-ÿÀ-ÖØ-öø-ÿ '-]*$/")
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_user","get_exhibition_artwork_artist_by_id", "get_exhibitions_for_home"})
+     * @Groups({"get_exhibitions_collection", "get_user"})
      */
     private $lastname;
 
@@ -68,26 +67,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=50)
      * @Assert\NotBlank(groups={"registration"})
      * @Assert\Regex("/^[a-zA-ZÀ-úÀ-ÿÀ-ÖØ-öø-ÿ '-]*$/")
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_user","get_exhibition_artwork_artist_by_id", "get_exhibitions_for_home"})
+     * @Groups({"get_exhibitions_collection", "get_user"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_user_data", "get_user","get_exhibition_artwork_artist_by_id", "get_exhibitions_for_home"})
+     * @Groups({"get_exhibitions_collection", "get_user"})
      */
     private $nickname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Url(groups={"registration"})
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_user","get_exhibition_artwork_artist_by_id"})
+     * @Groups({"get_exhibitions_collection", "get_user"})
      */
     private $avatar;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id","get_exhibition_artwork_artist_by_id"})
+     * @Groups({"get_exhibitions_collection"})
      */
     private $slug;
 
@@ -104,13 +103,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=800, nullable=true)
-     * @Groups({"get_user", "get_exhibitions_collection", "get_exhibition_by_id","get_exhibition_artwork_artist_by_id"})
+     * @Groups({"get_user", "get_exhibitions_collection"})
      */
     private $presentation;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Artwork::class, mappedBy="favorites")
+     */
+    private $favorites;
 
     public function __construct()
     {
         $this->exhibition = new ArrayCollection();
+        $this->favorites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -226,6 +231,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getFullName()
+    {
+        return $this->firstname.' '.$this->lastname;
+    }
+    
     public function getNickname(): ?string
     {
         return $this->nickname;
@@ -237,6 +247,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
 
     public function getAvatar(): ?string
     {
@@ -312,6 +323,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPresentation(?string $presentation): self
     {
         $this->presentation = $presentation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Artwork>
+     */
+    public function getFavorites(): Collection
+    {
+        return $this->favorites;
+    }
+
+    public function addFavorite(Artwork $favorite): self
+    {
+        if (!$this->favorites->contains($favorite)) {
+            $this->favorites[] = $favorite;
+            $favorite->addFavorite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavorite(Artwork $favorite): self
+    {
+        if ($this->favorites->removeElement($favorite)) {
+            $favorite->removeFavorite($this);
+        }
 
         return $this;
     }

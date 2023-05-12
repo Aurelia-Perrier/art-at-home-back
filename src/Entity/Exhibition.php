@@ -21,58 +21,58 @@ class Exhibition
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_exhibition_artwork_artist_by_id", "get_artwork_by_exhibition", "get_exhibitions_title_and_id"})
+     * @Groups({"get_exhibitions_collection", "get_artwork_by_exhibition"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_artwork","get_exhibition_artwork_artist_by_id", "get_artwork_by_exhibition", "get_exhibitions_title_and_id", "get_exhibitions_for_home"})
+     * @Groups({"get_exhibitions_collection","get_artwork_by_exhibition"})
      * @Assert\NotBlank
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id","get_exhibition_artwork_artist_by_id", "get_exhibitions_for_home"})
+     * @Groups({"get_exhibitions_collection"})
      */
     private $slug;
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_artwork"})
+     * @Groups({"get_exhibitions_collection"})
      */
     private $startDate;
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_artwork"})
+     * @Groups({"get_exhibitions_collection"})
      */
     private $endDate;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
+     * @Groups({"get_exhibitions_collection"})
      */
     private $status;
 
     /**
      * @ORM\OneToMany(targetEntity=Artwork::class, mappedBy="exhibition", orphanRemoval=true)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_exhibitions_for_home"})
+     * @Groups({"get_exhibitions_collection"})
      */
     private $artwork;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="exhibition")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_exhibitions_for_home"})
+     * @Groups({"get_exhibitions_collection"})
      * @Assert\NotBlank
      */
     private $artist;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
+     * @Groups({"get_exhibitions_collection"})
      */
     private $description;
 

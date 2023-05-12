@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ArtworkRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -17,20 +19,20 @@ class Artwork
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"get_artwork_by_exhibition"})
+     * @Groups({"get_artwork_by_exhibition", "get_exhibitions_collection", "get_favorites" })
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
-     * @Groups({"get_artworks_collection", "get_artwork", "get_exhibitions_collection", "get_exhibition_by_id", "get_artwork_by_exhibition","get_exhibition_artwork_artist_by_id"})
+     * @Groups({"get_exhibitions_collection", "get_artwork_by_exhibition", "get_favorites"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"get_artworks_collection", "get_artwork", "get_exhibitions_collection", "get_exhibition_by_id", "get_artwork_by_exhibition","get_exhibition_artwork_artist_by_id"})
+     * @Groups({"get_exhibitions_collection", "get_artwork_by_exhibition", "get_favorites"})
      */
     private $description;
 
@@ -38,33 +40,39 @@ class Artwork
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      * @Assert\Url
-     * @Groups({"get_artworks_collection", "get_artwork", "get_exhibitions_collection", "get_exhibition_by_id", "get_artwork_by_exhibition","get_exhibition_artwork_artist_by_id", "get_exhibitions_for_home"})
+     * @Groups({"get_exhibitions_collection", "get_artwork_by_exhibition","get_favorites"})
      */
     private $picture;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"get_artworks_collection", "get_artwork", "get_exhibitions_collection", "get_exhibition_by_id","get_exhibition_artwork_artist_by_id"})
+     * @Groups({"get_exhibitions_collection", "get_favorites"})
      */
     private $slug;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
+     * @Groups({"get_exhibitions_collection"})
      */
     private $status;
 
     /**
      * @ORM\ManyToOne(targetEntity=Exhibition::class, inversedBy="artwork")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"get_artwork", "get_artwork_by_exhibition"})
+     * @Groups({"get_artwork_by_exhibition"})
      * @Assert\NotBlank
      */
     private $exhibition;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="favorites")
+     */
+    private $favorites;
+
     public function __construct()
     {
         $this->status = false;
+        $this->favorites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -140,6 +148,30 @@ class Artwork
     public function setExhibition(?Exhibition $exhibition): self
     {
         $this->exhibition = $exhibition;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getFavorites(): Collection
+    {
+        return $this->favorites;
+    }
+
+    public function addFavorite(User $favorite): self
+    {
+        if (!$this->favorites->contains($favorite)) {
+            $this->favorites[] = $favorite;
+        }
+
+        return $this;
+    }
+
+    public function removeFavorite(User $favorite): self
+    {
+        $this->favorites->removeElement($favorite);
 
         return $this;
     }

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Artwork;
 use App\Entity\Exhibition;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -43,6 +44,11 @@ class ArtworkType extends AbstractType
             [
                 'label' => 'A quelle exposition voulez-vous lier cette oeuvre ? *',
                 'class' => Exhibition::class,
+                'query_builder' => function(EntityRepository $er)
+                {
+                    return $er->createQueryBuilder('e')
+                    ->where('e.status = 1');
+                },
                 'choice_label' => 'title',
                 'placeholder' => 'Veuillez sélectionner une exposition'
             ])

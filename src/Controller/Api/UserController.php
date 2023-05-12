@@ -3,6 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\User;
+use App\Repository\ArtworkRepository;
 use App\Repository\UserRepository;
 use App\Service\MySlugger;
 use Doctrine\Persistence\ManagerRegistry;
@@ -30,16 +31,6 @@ class UserController extends AbstractController
         // setting an empty array
         $data = [];
 
-        // setting a string depending on the role and return this string
-        if (implode(',', $user->getRoles()) == 'ROLE_ARTIST') {
-            $role = 'Artiste';
-        } else if (implode(',', $user->getRoles()) == 'ROLE_ADMIN') {
-            $role = 'Administrateur';
-        } else {
-            $role = 'Modérateur';
-        }
-
-
         //fetching information about logged user
         $nickname = $user->getNickname();
         $firstname = $user->getFirstname();
@@ -48,6 +39,7 @@ class UserController extends AbstractController
         $avatar = $user->getAvatar();
         $presentation = $user->getPresentation();
         $dateOfBirth = $user->getDateOfBirth();
+        $role = $user->getRoles();
 
         //fetching exhibitions of user
         $exhibitionFetched = $user->getExhibition();
@@ -140,7 +132,7 @@ class UserController extends AbstractController
 
         //hashing the password
         $user->setPassword($passwordHasher->hashPassword($user, $user->getPassword()));
-        
+
         //Saving the entity and saving in DBB
         $entityManager = $doctrine->getManager();
         $entityManager->persist($user);
@@ -150,8 +142,6 @@ class UserController extends AbstractController
         return $this->json(
             [],
             Response::HTTP_CREATED,
-            [],
-            ['groups' => 'get_user']
         );
     }
 
@@ -160,7 +150,7 @@ class UserController extends AbstractController
      *
      * @Route("api/secure/users/edit", name="app_api_user_edit", methods={"PATCH"})
      */
-    public function editUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, MySlugger $slugger): Response
+    public function editUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine): Response
     {
 
         // getting the logged user
@@ -205,6 +195,104 @@ class UserController extends AbstractController
         // return status 200
         return $this->json(
             $user,
+            Response::HTTP_OK,
+            [],
+            ['groups' => 'get_user']
+        );
+    }
+
+    /**
+     * Get all favorites of logged user
+     *
+     * @Route ("api/secure/user/favorites", name="app_api_user_favorites", methods={"GET"})
+     */
+    public function getFavoritesByUser() : Response
+    {
+        // getting the logged user
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+
+        //fetching user's favorites
+        $favorites = $user->getFavorites();
+        
+        //return status 200
+        return $this->json(
+            $favorites,
+            Response::HTTP_OK,
+            [],
+            ['groups' => 'get_favorites']
+        );
+    }
+
+    /**
+     * Insert favorites in DB
+     *
+     * @Route ("api/secure/user/favorites/create", name="app_api_user_favorites_create", methods={"POST"})
+     */
+    public function addFavorites(Request $request, ArtworkRepository $artworkRepository, ManagerRegistry $doctrine ) : Response
+    {
+        // getting the logged user
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+
+        // Get jsonContent
+        $jsonContent = $request->getContent();
+
+        //Decoding json
+        $jsonContentDecode= json_decode($jsonContent);
+
+        //Getting the array
+        $favorites = $jsonContentDecode->favorites;
+        
+        //looping to get each artwork thanks to id
+        //ten adding to user's favorites
+        foreach($favorites as $favorite)
+        {
+            $artwork = $artworkRepository->findOneBy(['id' => $favorite]);
+
+            $user->addFavorite($artwork);
+
+        }
+
+        // Save entity
+        $entityManager = $doctrine->getManager();
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+
+        //return status 201
+        return $this->json(
+            $user->getFavorites(),
+            Response::HTTP_CREATED,
+            [],
+            ['groups' => 'get_favorites']
+        );
+  
+    }
+
+    /**
+     * Remove favorites from DB
+     *
+     * @Route ("api/secure/user/favorites/remove", methods={"DELETE"})
+     */
+    public function removeFavorites()
+    {
+        // Pour Mathieu
+    }
+
+    /**
+     * Get all artists
+     *
+     * @Route ("api/artists", name="app_api_artists", methods={"GET"})
+     */
+    public function getArtists(UserRepository $userRepository) : Response
+    {
+        //fetch all users with role = ROLE_ARTIST
+        $artists = $userRepository->getUserWithRoleArtist();
+
+        //return status 200
+        return $this->json(
+            $artists,
             Response::HTTP_OK,
             [],
             ['groups' => 'get_user']

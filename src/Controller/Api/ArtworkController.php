@@ -19,46 +19,6 @@ use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 class ArtworkController extends AbstractController
 {
     /**
-     * Get all artworks entity
-     * @Route("/api/artworks", name="app_api_artwork", methods={"GET"})
-     */
-    public function getArtworks(ArtworkRepository $artworkRepository): Response
-    {
-        // fetch all artworks
-        $artworks = $artworkRepository->findAll();
-
-        // transform data in json format
-        return $this->json(
-            $artworks,
-            Response::HTTP_OK,
-            [],
-            ['groups' => 'get_artwork_by_exhibition']
-        );
-    }
-
-    /**
-     * Get an artwork entity
-     *
-     * @Route("/api/artworks/{id}", name="app_api_artwork_by_id", requirements={"id"="\d+"}, methods={"GET"})
-     */
-    public function getArtworkById(Artwork $artwork = null): Response
-    {
-
-        // 404 ?
-        if ($artwork === null) {
-            return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
-        }
-
-        // transform entity Artwork into json 
-        return $this->json(
-            $artwork,
-            Response::HTTP_OK,
-            [],
-            ['groups' => 'get_artwork']
-        );
-    }
-
-    /**
      * Create an artwork entity
      *
      * @Route("/api/secure/artworks/new", name="app_api_artwork_new", methods={"POST"})
@@ -175,7 +135,7 @@ class ArtworkController extends AbstractController
             $artworkModified,
             Response::HTTP_OK,
             [],
-            ['groups' => 'get_artwork']
+            ['groups' => 'get_artwork_by_exhibition']
         );
     }
 
@@ -205,8 +165,6 @@ class ArtworkController extends AbstractController
         return $this->json(
             $newArtworksList,
             Response::HTTP_NO_CONTENT,
-            [],
-            ['groups' => 'get_artwork_by_exhibition']
         );
     }
 
