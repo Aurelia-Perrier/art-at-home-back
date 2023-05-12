@@ -215,7 +215,7 @@ class UserController extends AbstractController
     /**
      * Get all favorites of logged user
      *
-     * @Route ("api/secure/user/favorites", name="app_api_user_favorites", requirements={"id"="\d+"}, methods={"GET"})
+     * @Route ("api/secure/user/favorites", name="app_api_user_favorites", methods={"GET"})
      */
     public function getFavoritesByUserId() : Response
     {
@@ -238,7 +238,7 @@ class UserController extends AbstractController
     /**
      * Insert favorites in DB
      *
-     * @Route ("api/secure/user/favorites/create", name="app_api_user_favorites_create", requirements={"id"="\d+"}, methods={"POST"})
+     * @Route ("api/secure/user/favorites/create", name="app_api_user_favorites_create", methods={"POST"})
      */
     public function addFavorites(Request $request, ArtworkRepository $artworkRepository, ManagerRegistry $doctrine ) : Response
     {
@@ -279,5 +279,15 @@ class UserController extends AbstractController
             ['groups' => 'get_favorites']
         );
   
+    }
+
+    /**
+     * Remove favorites from DB
+     *
+     * @Route ("api/secure/user/favorites/remove", methods={"DELETE"})
+     */
+    public function removeFavorites()
+    {
+        // Pour Mathieu
     }
 }
