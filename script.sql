@@ -7,7 +7,6 @@ SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
 SET NAMES utf8mb4;
 
-DROP TABLE IF EXISTS `artwork`;
 CREATE TABLE `artwork` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -19,7 +18,7 @@ CREATE TABLE `artwork` (
   PRIMARY KEY (`id`),
   KEY `IDX_881FC5762A7D4494` (`exhibition_id`),
   CONSTRAINT `FK_881FC5762A7D4494` FOREIGN KEY (`exhibition_id`) REFERENCES `exhibition` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=188 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=190 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 TRUNCATE `artwork`;
 INSERT INTO `artwork` (`id`, `title`, `description`, `picture`, `slug`, `status`, `exhibition_id`) VALUES
@@ -174,7 +173,20 @@ INSERT INTO `artwork` (`id`, `title`, `description`, `picture`, `slug`, `status`
 (149,	'Promenade sur le bord du lac',	'Cette peinture réaliste représente un canard voguant sur un lac. Les détails de l\'animal et de la végétation aux alentours sont très minutieux et les coups de pinceaux très réfléchis. Les couleurs sont neutres et instaurent donc une ambiance calme et sereine.',	'https://cdn.pixabay.com/photo/2013/02/13/16/53/robert-padley-81327_640.jpg',	'promenade-sur-le-bord-du-lac',	1,	8),
 (150,	'La fleur d\'ivresse',	'Il s\'agit d\'une peinture de fleurs colorées. Les couleurs sont très prononcés et vives, ce qui apporte un sentiment de joie et de vivacité à l\'oeuvre. Les effets de bavures donnent un petit côté négligé qui est tout de même réfléchi. Les fleurs sont placées sur un fond blanc ce qui fait ressortir les couleurs intenses des pétales.',	'https://cdn.pixabay.com/photo/2017/09/04/22/40/flowers-2715804_640.jpg',	'la-fleur-d-ivresse',	1,	7);
 
-DROP TABLE IF EXISTS `contact`;
+CREATE TABLE `artwork_user` (
+  `artwork_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`artwork_id`,`user_id`),
+  KEY `IDX_3975B07DB8FFA4` (`artwork_id`),
+  KEY `IDX_3975B07A76ED395` (`user_id`),
+  CONSTRAINT `FK_3975B07A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_3975B07DB8FFA4` FOREIGN KEY (`artwork_id`) REFERENCES `artwork` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+TRUNCATE `artwork_user`;
+INSERT INTO `artwork_user` (`artwork_id`, `user_id`) VALUES
+(15,	3);
+
 CREATE TABLE `contact` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -186,7 +198,6 @@ TRUNCATE `contact`;
 INSERT INTO `contact` (`id`, `email`, `phone_number`) VALUES
 (1,	'artathome@gmail.com',	'01.02.03.04.05');
 
-DROP TABLE IF EXISTS `exhibition`;
 CREATE TABLE `exhibition` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -199,7 +210,7 @@ CREATE TABLE `exhibition` (
   PRIMARY KEY (`id`),
   KEY `IDX_B8353389B7970CF8` (`artist_id`),
   CONSTRAINT `FK_B8353389B7970CF8` FOREIGN KEY (`artist_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 TRUNCATE `exhibition`;
 INSERT INTO `exhibition` (`id`, `title`, `slug`, `start_date`, `end_date`, `status`, `artist_id`, `description`) VALUES
@@ -214,7 +225,6 @@ INSERT INTO `exhibition` (`id`, `title`, `slug`, `start_date`, `end_date`, `stat
 (9,	'Inspiration cosmique',	'inspiration-cosmique',	'2023-04-20',	'2023-08-20',	1,	6,	'L\'artiste nous amène vers une célébration de l\'Univers et de son influence sur l\'imagination et la créativité humaines. Les œuvres présentées dans cette exposition cherchent à explorer les idées de l\'espace, de l\'astrophysique et de l\'exploration spatiale. Les œuvres célèbrent la beauté de l\'espace et de l\'Univers. Les visiteurs sont invités à contempler les différentes manières dont les artistes explorent les thèmes de l\'espace, de l\'astrophysique et de l\'exploration spatiale à travers l\'art.'),
 (10,	'Dialogues silencieux',	'dialogues-silencieux',	'2023-04-20',	'2023-08-20',	1,	5,	'C\'est une exploration de la communication non verbale et des expressions visuelles qui transcendent les mots. Les œuvres d\'art présentées dans cette exposition cherchent à transmettre des émotions, des idées et des réflexions en utilisant des formes, des couleurs, des textures et des mouvements. Vous serez accueillis par des œuvres d\'art silencieuses mais puissantes.');
 
-DROP TABLE IF EXISTS `legal_notices`;
 CREATE TABLE `legal_notices` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `content` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -225,7 +235,6 @@ TRUNCATE `legal_notices`;
 INSERT INTO `legal_notices` (`id`, `content`) VALUES
 (1,	'<p>\r\n          Identification du propriétaire du site : \r\n@Maïté Soulard\r\n / \r\n@Aurélia PERRIER\r\n / @Mathieu / \r\n@David B.\r\n\r\n        </p>\r\n        <p>\r\n          Propriété intellectuelle : Tous les contenus présents sur le site de\r\n          littérature (textes, images, vidéos, logos, etc.) sont la propriété\r\n          exclusive de WriterTalent. ou de ses partenaires. Toute reproduction,\r\n          modification, distribution ou exploitation de ces contenus sans\r\n          autorisation écrite préalable est strictement interdite.\r\n        </p>\r\n        <p>\r\n          Données personnelles : Ce site collecte des données personnelles des\r\n          utilisateurs (nom, prénom, adresse e-mail, etc.) dans le cadre de\r\n          l’utilisation du site et des services proposés. Ces données sont\r\n          traitées conformément à la réglementation en vigueur et aux dispositions\r\n          de la politique de confidentialité accessible sur le site.\r\n        </p>\r\n        <p>\r\n          Cookies: Ce site utilise des cookies pour améliorer l’expérience\r\n          utilisateur et proposer des services adaptés aux préférences des\r\n          utilisateurs. Les utilisateurs peuvent gérer les cookies en fonction de\r\n          leurs préférences via les paramètres de leur navigateur.\r\n        </p>\r\n        <p>\r\n          Limitation de responsabilité : Ce site met tout en œuvre pour garantir\r\n          l’exactitude et la mise à jour des informations diffusées sur le site.\r\n          Cependant, les éditeurs de WriterTalent ne peuvent être tenus\r\n          responsables des erreurs ou omissions dans ces informations. De même,\r\n          les éditeurs de WriterTalent ne peuvent être tenus responsables des\r\n          dommages directs ou indirects résultant de l’utilisation du site ou des\r\n          informations qu’il contient.\r\n        </p>\r\n        <p>\r\n          Droit applicable et juridiction compétente : Les présentes mentions\r\n          légales sont soumises au droit français. Tout litige relatif à\r\n          l’utilisation du site sera de la compétence exclusive des tribunaux\r\n          français.\r\n        </p>\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n');
 
-DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(180) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -234,24 +243,24 @@ CREATE TABLE `user` (
   `lastname` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `firstname` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `nickname` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `avatar` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `avatar` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT 'https://cdn.pixabay.com/photo/2014/04/02/10/25/man-303792_640.png',
   `slug` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_of_birth` date DEFAULT NULL,
   `presentation` varchar(800) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_8D93D649E7927C74` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 TRUNCATE `user`;
 INSERT INTO `user` (`id`, `email`, `roles`, `password`, `lastname`, `firstname`, `nickname`, `avatar`, `slug`, `date_of_birth`, `presentation`) VALUES
-(1,	'admin@admin.com',	'[\"ROLE_ADMIN\"]',	'$2y$13$Heiyu4ZaStCK6qQEzmE0Ru7LA.y7ToKGIVHK6Xbpw8ga8JnEUWPM2',	'Mallet',	'Colette',	NULL,	NULL,	NULL,	NULL,	NULL),
+(1,	'admin@admin.com',	'[\"ROLE_ADMIN\"]',	'$2y$13$Heiyu4ZaStCK6qQEzmE0Ru7LA.y7ToKGIVHK6Xbpw8ga8JnEUWPM2',	'Mallet',	'Colette',	NULL,	NULL,	'colette-mallet',	NULL,	NULL),
 (2,	'moderator@moderator.com',	'[\"ROLE_MODERATOR\"]',	'$2y$13$Heiyu4ZaStCK6qQEzmE0Ru7LA.y7ToKGIVHK6Xbpw8ga8JnEUWPM2',	'Renault',	'William',	NULL,	NULL,	'william-renault',	NULL,	NULL),
 (3,	'luminart@gmail.com',	'[\"ROLE_ARTIST\"]',	'$2y$13$PN1tzLobcJrDcx6aw3quhepTKlKBUNOPcVLJcIHQmn4sk1ZgARE9K',	'Petit',	'Gilles',	'Luminart',	'https://cdn.pixabay.com/photo/2016/12/07/21/01/cartoon-1890438_640.jpg',	'luminart',	'1990-11-20',	'Je suis un artiste contemporain français dont le travail se concentre sur l\'exploration de la relation entre l\'art et la vie. Je suis connu pour mes peintures et mes sculptures qui reflètent une esthétique minimaliste et conceptuelle, ainsi que pour mes installations immersives qui invitent le spectateur à interagir avec l\'œuvre'),
 (4,	'lunaire-artiste@gmail.com',	'[\"ROLE_ARTIST\"]',	'$2y$13$6M3bVDVn8BPs09HDqQyRh.wJYFxB1zVlzawxVDnwa3pUMr2cyGoNy',	'David',	'Paul',	'Lunaire Artiste',	'https://cdn.pixabay.com/photo/2017/03/17/22/23/comedian-2152801_640.jpg',	'lunaire-artiste',	'1994-11-13',	'Je suis un artiste contemporain qui travaille principalement avec des techniques mixtes pour créer des œuvres d\'art originales et dynamiques. Né en France, j\'ai grandi dans une famille d\'artistes et ai commencé à m\'intéresser à l\'art dès mon plus jeune âge.'),
 (5,	'luminea@orange.fr',	'[\"ROLE_ARTIST\"]',	'$2y$13$6M3bVDVn8BPs09HDqQyRh.wJYFxB1zVlzawxVDnwa3pUMr2cyGoNy',	'Maury',	'Diane',	'Luminéa',	'https://cdn.pixabay.com/photo/2022/12/28/01/47/book-cover-7682044_640.jpg',	'luminea',	'1973-08-13',	'Artiste passionnée par la peinture et la sculpture. Je suis née dans une famille d\'artistes et a été encouragée dès mon plus jeune âge à développer mes talents artistiques.\r\nJe me suis spécialisée dans l\'utilisation de la couleur et de la lumière pour créer des œuvres d\'art qui célèbrent la beauté de la nature et de la vie. Mes peintures sont souvent abstraites et géométriques, avec des motifs de couleurs vives qui se chevauchent et se fondent pour créer une sensation de mouvement et d\'harmonie.'),
 (6,	'martal@gmail.com',	'[\"ROLE_ARTIST\"]',	'$2y$13$6M3bVDVn8BPs09HDqQyRh.wJYFxB1zVlzawxVDnwa3pUMr2cyGoNy',	'Martinez',	'Alexandrie',	'Martal',	'https://cdn.pixabay.com/photo/2016/08/31/02/10/girl-1632515_640.jpg',	'martal',	'1970-09-16',	'Je suis une artiste contemporaine talentueuse et polyvalente, originaire de France. Je suis connue pour mon style unique et expressif, ainsi que pour ma capacité à utiliser une variété de médiums pour créer des œuvres d\'art qui capturent l\'imagination. Née dans une famille d\'artistes, j\'ai commencé à dessiner dès mon plus jeune âge et ai rapidement découvert ma passion pour l\'art.'),
-(7,	'arcadien@orange.fr',	'[\"ROLE_ARTIST\"]',	'$2y$13$6M3bVDVn8BPs09HDqQyRh.wJYFxB1zVlzawxVDnwa3pUMr2cyGoNy',	'Girard',	'Louis',	'Arcadien',	'https://cdn.pixabay.com/photo/2022/08/02/01/33/man-7359262_640.jpg',	'arcadien',	'1991-02-12',	'Gérard est un artiste libre, indépendant et non-conformiste, qui vit et travaille en France. Il est connu pour son style unique et son approche non-conventionnelle de l\'art.\r\n\r\nJ\'ai commencé à expérimenter avec l\'art dès mon plus jeune âge, et ma passion pour la création m\'a conduit à explorer une variété de médiums, tels que la peinture, la sculpture et la photographie. Au fil du temps, j\'ai développé mon propre style distinctif, qui se caractérise par des couleurs vives, des formes abstraites et des textures riches.Mon art est souvent inspiré par la nature, les émotions humaines et la condition humaine en général.'),
+(7,	'arcadien@orange.fr',	'[\"ROLE_ARTIST\"]',	'$2y$13$6M3bVDVn8BPs09HDqQyRh.wJYFxB1zVlzawxVDnwa3pUMr2cyGoNy',	'Girard',	'Louis',	'Arcadien',	'https://cdn.pixabay.com/photo/2022/08/02/01/33/man-7359262_640.jpg',	'arcadien',	'1991-02-12',	'Gérard est un artiste libre, indépendant et non-conformiste, qui vit et travaille en France. Je suis connu pour mon style unique et mon approche non-conventionnelle de l\'art.\r\nJ\'ai commencé à expérimenter avec l\'art dès mon plus jeune âge, et ma passion pour la création m\'a conduit à explorer une variété de médiums, tels que la peinture, la sculpture et la photographie. Au fil du temps, j\'ai développé mon propre style distinctif, qui se caractérise par des couleurs vives, des formes abstraites et des textures riches.Mon art est souvent inspiré par la nature, les émotions humaines et la condition humaine en général.'),
 (8,	'seb.lemaitre@gmail.com',	'[\"ROLE_ARTIST\"]',	'$2y$13$6M3bVDVn8BPs09HDqQyRh.wJYFxB1zVlzawxVDnwa3pUMr2cyGoNy',	'Lemaitre',	'Sébastien',	NULL,	'https://picsum.photos/id/26/50/50',	'sebastien-lemaitre',	NULL,	'je suis laurent, coucou c\'est moi laurent j\'adore la psicine et la plage. Mon plat préféré c\'est les grenouilles miaaaaaaaaaammmmmmmm'),
 (9,	'chromatix@gmail.com',	'[\"ROLE_ARTIST\"]',	'$2y$13$6M3bVDVn8BPs09HDqQyRh.wJYFxB1zVlzawxVDnwa3pUMr2cyGoNy',	'Rossi',	'Maurice',	'Chromatix',	'https://cdn.pixabay.com/photo/2021/01/21/16/44/model-5937809_640.jpg',	'chromatix',	'1956-04-21',	'Je suis un artiste dévoué et passionné qui travaille dans une variété de médiums, notamment la peinture, la sculpture et la photographie. Originaire de France, j\'ai commencé à m\'intéresser à l\'art dès mon plus jeune âge et ai rapidement découvert ma passion pour la création. Au fil du temps, j\'ai développé mon propre style distinctif qui se caractérise par une palette de couleurs riches et vibrantes et une esthétique élégante et sophistiquée. J\'utilise souvent des formes géométriques et des motifs abstraits pour créer des œuvres d\'art qui sont à la fois intrigantes et captivantes.');
 
--- 2023-05-03 15:06:37
+-- 2023-05-15 14:18:34
