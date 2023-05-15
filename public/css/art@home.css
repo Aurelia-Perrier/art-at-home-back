@@ -7,6 +7,10 @@ h1 {
     font-family: 'Averia Libre', display;
     color: #D6B041;
 }
+nav{
+
+    opacity: 0.89;
+}
 
 .form {
     
@@ -31,5 +35,12 @@ h1 {
     top: 90%;
     left: 98%;
     color: black;
+}
+
+#main
+{
+    padding-top: 7em!important;
+    padding-left: 5em!important;
+    padding-right: 5em!important;
 }
 
