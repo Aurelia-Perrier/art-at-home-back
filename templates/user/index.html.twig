@@ -13,7 +13,7 @@
     <thead>
         <tr class="text-center">
             <th>Email</th>
-            <th>Roles</th>
+            <th>Role</th>
             <th>Nom</th>
             <th>Prénom</th>
             <th>Pseudo</th>
@@ -24,7 +24,17 @@
         {% for user in users %}
         <tr class="text-center">
             <td>{{ user.email }}</td>
-            <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+            {% for role in user.roles %}
+            {% if role == "ROLE_ADMIN" %}
+            <td>Administrateur</td>
+            {% elseif role == "ROLE_MODERATOR" %}
+            <td>Modérateur</td>
+            {% elseif role == "ROLE_ARTIST" %}
+            <td>Artiste</td>
+            {% else %}
+            <td>Utilisateur</td>       
+            {% endif %}
+            {% endfor %}
             <td>{{ user.lastname }}</td>
             <td>{{ user.firstname }}</td>
             {% if user.nickname is same as (null) %}
