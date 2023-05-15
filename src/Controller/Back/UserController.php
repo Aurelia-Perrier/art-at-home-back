@@ -30,6 +30,19 @@ class UserController extends AbstractController
     }
 
     /**
+     * @Route ("/sort/user", name="app_sort_user", methods={"POST"})
+     */
+    public function sortByUser(Request $request, UserRepository $userRepository)
+    {
+        $role = $request->request->get('role');
+
+        $users = $userRepository->getUsersListOnRole($role);
+        
+        return $this->render('user/index.html.twig', ['users' => $users]);
+        
+    }
+
+    /**
      * Display new form and process new form
      * 
      * @Route("/new", name="app_user_new", methods={"GET", "POST"})

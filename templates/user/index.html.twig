@@ -8,6 +8,22 @@
 <div class="text-center">
     <a href="{{ path('app_user_new') }}" class="btn btn-outline-success mb-4 mt-4">Ajouter un utilisateur</a>
 </div>
+
+<form action="{{ path('app_sort_user')}}" method="post">
+    <div class="input-group mb-4" style="width: 20%;">
+        <select name="role" class="form-select" aria-label="Choisir un utilisateur" value="{{app.request.get('role')}}">
+            <option>-- Trier par --</option>
+            <option value="ROLE_ADMIN">Administrateur</option>
+            <option value="ROLE_MODERATOR">Modérateur</option>
+            <option value="ROLE_ARTIST">Artiste</option>
+            <option value="ROLE_USER">Utilisateur</option>
+        </select>
+        <button class="btn btn-outline-secondary" type="submit">Trier</button>
+    </div>
+</form>
+
+
+
 {{ include('_button_up.html.twig') }}
 <table class="table table-striped table-hover">
     <thead>
@@ -32,7 +48,7 @@
             {% elseif role == "ROLE_ARTIST" %}
             <td>Artiste</td>
             {% else %}
-            <td>Utilisateur</td>       
+            <td>Utilisateur</td>
             {% endif %}
             {% endfor %}
             <td>{{ user.lastname }}</td>
@@ -52,7 +68,7 @@
         </tr>
         {% else %}
         <tr>
-            <td colspan="10">Aucun utilisateurs</td>
+            <td colspan="10" class="text-center">Aucun utilisateurs</td>
         </tr>
         {% endfor %}
     </tbody>
