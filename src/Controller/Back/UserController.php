@@ -19,27 +19,25 @@ class UserController extends AbstractController
 {
     /**
      * Display all users
+     * Process sorting depending on role
      * 
-     * @Route("/", name="app_user_index", methods={"GET"})
+     * @Route("/", name="app_user_index", methods={"GET", "POST"})
      */
-    public function index(UserRepository $userRepository): Response
-    {
-        return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
-        ]);
-    }
-
-    /**
-     * @Route ("/sort/user", name="app_sort_user", methods={"POST"})
-     */
-    public function sortByUser(Request $request, UserRepository $userRepository)
+    public function index(UserRepository $userRepository, Request $request): Response
     {
         $role = $request->request->get('role');
 
-        $users = $userRepository->getUsersListOnRole($role);
-        
-        return $this->render('user/index.html.twig', ['users' => $users]);
-        
+        if(isset($role) && $role != "ROLES"){
+
+            $users = $userRepository->getUsersListOnRole($role);
+        }else if($role === "ROLES" || !isset($role)){
+            
+            $users = $userRepository->findAll();
+        }
+      
+        return $this->render('user/index.html.twig', [
+            'users' => $users
+        ]);
     }
 
     /**
