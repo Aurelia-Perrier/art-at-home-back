@@ -58,6 +58,15 @@ class UserController extends AbstractController
                 'description' => $description
             ];
         }
+
+        $favorites = $user->getFavorites();
+        $favoritesArray =[];
+        foreach($favorites as $favorite)
+        {
+
+            $id = $favorite->getId();
+            $favoritesArray[] = $id;
+        }
         // putting the informations in the empty array
         $data = [
             'nickname' => $nickname,
@@ -68,7 +77,8 @@ class UserController extends AbstractController
             'avatar' => $avatar,
             'presentation' => $presentation,
             'role' => $role,
-            'exhibitions' => $exhibitions
+            'exhibitions' => $exhibitions,
+            'favorites' => $favoritesArray
 
         ];
 
