@@ -73,7 +73,7 @@ class UserController extends AbstractController
             'firstname' => $firstname,
             'lastname' => $lastname,
             'email' => $email,
-            'dateOfBirth' => $dateOfBirth,
+            'birthday' => $dateOfBirth,
             'avatar' => $avatar,
             'presentation' => $presentation,
             'role' => $role,
