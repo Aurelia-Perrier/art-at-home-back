@@ -19,20 +19,20 @@ class Artwork
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"get_artwork_by_exhibition", "get_exhibitions_collection", "get_favorites" })
+     * @Groups({"get_artwork_by_exhibition", "get_exhibitions_collection"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
-     * @Groups({"get_exhibitions_collection", "get_artwork_by_exhibition", "get_favorites"})
+     * @Groups({"get_exhibitions_collection", "get_artwork_by_exhibition"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"get_exhibitions_collection", "get_artwork_by_exhibition", "get_favorites"})
+     * @Groups({"get_exhibitions_collection", "get_artwork_by_exhibition"})
      */
     private $description;
 
@@ -40,13 +40,13 @@ class Artwork
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      * @Assert\Url
-     * @Groups({"get_exhibitions_collection", "get_artwork_by_exhibition","get_favorites"})
+     * @Groups({"get_exhibitions_collection", "get_artwork_by_exhibition"})
      */
     private $picture;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"get_exhibitions_collection", "get_favorites"})
+     * @Groups({"get_exhibitions_collection"})
      */
     private $slug;
 
