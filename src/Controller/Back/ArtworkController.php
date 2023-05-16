@@ -18,7 +18,10 @@ class ArtworkController extends AbstractController
 {
     /**
      * Displaying all validate artworks OR display all artworks with keyword in search bar
-     * 
+     *
+     * @param ArtworkRepository $artworkRepository
+     * @param Request $request
+     * @return Response
      * @Route("/", name="app_artwork_index", methods={"GET"})
      */
     public function index(ArtworkRepository $artworkRepository, Request $request): Response
@@ -34,6 +37,8 @@ class ArtworkController extends AbstractController
     /**
      * Displaying artworks with status false
      *
+     * @param ArtworkRepository $artworkRepository
+     * @return Response
      * @Route ("/validation-waiting", name="app_validation_waiting", methods={"GET"})
      */
     public function validatePage(ArtworkRepository $artworkRepository): Response
@@ -45,7 +50,10 @@ class ArtworkController extends AbstractController
 
     /**
      * Display create form and form process
-     * 
+     *
+     * @param Request $request
+     * @param ArtworkRepository $artworkRepository
+     * @return Response
      * @Route("/new", name="app_artwork_new", methods={"GET", "POST"})
      */
     public function new(Request $request, ArtworkRepository $artworkRepository): Response
@@ -77,6 +85,8 @@ class ArtworkController extends AbstractController
     /**
      * Display an artwork
      * 
+     * @param Artwork|null $artwork 
+     * @return Response
      * @Route("/{id}", name="app_artwork_show", methods={"GET"},requirements={"id"="\d+"} )
      */
     public function show(Artwork $artwork = null): Response
@@ -93,7 +103,11 @@ class ArtworkController extends AbstractController
 
     /**
      * Display edit form and form process
-     * 
+     *
+     * @param Request $request
+     * @param Artwork|null $artwork
+     * @param ArtworkRepository $artworkRepository
+     * @return Response
      * @Route("/{id}/edit", name="app_artwork_edit", methods={"GET", "POST"}, requirements={"id"="\d+"})
      */
     public function edit(Request $request, Artwork $artwork = null, ArtworkRepository $artworkRepository): Response
@@ -128,7 +142,11 @@ class ArtworkController extends AbstractController
 
     /**
      * Process delete form
-     * 
+     *
+     * @param Request $request
+     * @param Artwork|null $artwork
+     * @param ArtworkRepository $artworkRepository
+     * @return Response
      * @Route("/{id}", name="app_artwork_delete", methods={"POST"}, requirements={"id"="\d+"})
      */
     public function delete(Request $request, Artwork $artwork = null, ArtworkRepository $artworkRepository): Response
@@ -187,6 +205,10 @@ class ArtworkController extends AbstractController
     /**
      * Decline an artwork
      *
+     * @param Artwork|null $artwork
+     * @param ArtworkRepository $artworkRepository
+     * @param Request $request
+     * @return Response
      * @Route ("/artworks/{id}/decline", name="app_artwork_decline", methods={"POST"}, requirements={"id"="\d+"})
      */
     public function decline(Artwork $artwork = null, ArtworkRepository $artworkRepository, Request $request): Response

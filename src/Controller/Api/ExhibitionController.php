@@ -17,7 +17,10 @@ class ExhibitionController extends AbstractController
 {
     /**
      * Get all exhibitions with related artworks and related artist
-     *@Route("/api/exhibitions", name="app_api_exhibitions_get", methods={"GET"})
+     *
+     * @param ExhibitionRepository $exhibitionRepository
+     * @return Response
+     * @Route("/api/exhibitions", name="app_api_exhibitions_get", methods={"GET"})
      */
     public function getExhibitions(ExhibitionRepository $exhibitionRepository): Response
     {
@@ -30,6 +33,12 @@ class ExhibitionController extends AbstractController
 
     /**
      * Create exhibition item
+     *
+     * @param Request $request
+     * @param SerializerInterface $serializer
+     * @param ManagerRegistry $doctrine
+     * @param ValidatorInterface $validator
+     * @return Response
      * @Route("/api/secure/exhibitions/new", name="app_api_exhibition_new", methods={"POST"})
      */
     public function createExhibition(Request $request, SerializerInterface $serializer, ManagerRegistry $doctrine, ValidatorInterface $validator): Response

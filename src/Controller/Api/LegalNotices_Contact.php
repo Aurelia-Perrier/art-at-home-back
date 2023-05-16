@@ -14,6 +14,7 @@ class LegalNotices_Contact extends AbstractController
      * Get legal notices
      *
      * @param LegalNoticesRepository $legalNoticesRepository
+     * @return Response
      * @Route ("/api/legal-notices", name="app_api_legale_notices", methods={"GET"})
      */
     public function getLegalNotices(LegalNoticesRepository $legalNoticesRepository) : Response
@@ -33,9 +34,10 @@ class LegalNotices_Contact extends AbstractController
      * Get contact
      *
      * @param ContactRepository $contactRepository
+     * @return Response
      * @Route ("api/contact", name="app_api_contact", methods={"GET"})
      */
-    public function getContact(ContactRepository $contactRepository)
+    public function getContact(ContactRepository $contactRepository) : Response
     {
         $contact = $contactRepository->findAll();
 

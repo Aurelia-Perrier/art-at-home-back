@@ -23,6 +23,8 @@ class ExhibitionController extends AbstractController
     /**
      * Display all active exhibitions
      * 
+     * @param ExhibitionRepository $exhibitionRepository
+     * @return Response
      * @Route("/", name="app_exhibition_index", methods={"GET"})
      */
     public function index(ExhibitionRepository $exhibitionRepository): Response
@@ -35,6 +37,9 @@ class ExhibitionController extends AbstractController
     /**
      * Display add form and process form
      * 
+     * @param Request $request
+     * @param ExhibitionRepository $exhibitionRepository
+     * @return Response
      * @Route("/new", name="app_exhibition_new", methods={"GET", "POST"})
      */
     public function new(Request $request, ExhibitionRepository $exhibitionRepository): Response
@@ -66,6 +71,8 @@ class ExhibitionController extends AbstractController
     /**
      * Display exhibition entity
      * 
+     * @param Exhibition|null $exhibition 
+     * @return Response
      * @Route("/{id}", name="app_exhibition_show", methods={"GET"}, requirements={"id"="\d+"})
      */
     public function show(Exhibition $exhibition = null): Response
@@ -83,6 +90,10 @@ class ExhibitionController extends AbstractController
     /**
      * Display edit form and process edit form
      * 
+     * @param Request $request
+     * @param Exhibition|null $exhibition
+     * @param ExhibitionRepository $exhibitionRepository
+     * @return Response
      * @Route("/{id}/edit", name="app_exhibition_edit", methods={"GET", "POST"}, requirements={"id"="\d+"})
      */
     public function edit(Request $request, Exhibition $exhibition = null, ExhibitionRepository $exhibitionRepository): Response
@@ -119,6 +130,10 @@ class ExhibitionController extends AbstractController
     /**
      * Delete an exhibition item
      * 
+     * @param Request $request
+     * @param Exhibition|null $exhibition
+     * @param ExhibitionRepository $exhibitionRepository
+     * @return Response
      * @Route("/{id}", name="app_exhibition_delete", methods={"POST"}, requirements={"id"="\d+"})
      */
     public function delete(Request $request, Exhibition $exhibition = null, ExhibitionRepository $exhibitionRepository): Response
@@ -159,6 +174,7 @@ class ExhibitionController extends AbstractController
     /**
      * Get related artworks to exhibition
      *
+     * @param Request $request
      * @param Exhibition $exhibition
      * @Route ("/{id}/artworks", name="app_exhibitions_artworks", methods={"GET"}, requirements={"id"="\d+"})
      */
@@ -177,9 +193,10 @@ class ExhibitionController extends AbstractController
      * Executing command to check exhibitions status 
      *
      * @param KernelInterface $kernel
+     * @return Response
      * @Route ("/command", name="app_exhibitions_command_check")
      */
-    public function executeCommand(KernelInterface $kernel)
+    public function executeCommand(KernelInterface $kernel) : Response
     {
         // fetching symfony application
         $application = new Application($kernel);

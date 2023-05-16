@@ -20,6 +20,8 @@ class UserController extends AbstractController
 {
     /**
      * Get information artist and exhibitions for profile page
+     * 
+     * @return Response
      * @Route("api/secure/users/profile", name="app_api_users_profile", methods={"GET"})
      */
     public function getInformationForProfile(): Response
@@ -94,6 +96,13 @@ class UserController extends AbstractController
      * Create a new user
      *
      * @param Request $request
+     * @param SerializerInterface $serializer
+     * @param ValidatorInterface $validator
+     * @param ManagerRegistry $doctrine
+     * @param UserPasswordHasherInterface $passwordHasher
+     * @param MySlugger $slugger
+     * @param UserRepository $userRepository
+     * @return Response
      * @Route ("api/users/new", name="app_api_users_create", methods={"POST"})
      */
     public function createUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasher, MySlugger $slugger, UserRepository $userRepository): Response
@@ -158,6 +167,11 @@ class UserController extends AbstractController
     /**
      * Edit profile
      *
+     * @param Request $request
+     * @param SerializerInterface $serializer
+     * @param ValidatorInterface $validator
+     * @param ManagerRegistry $doctrine
+     * @return Response
      * @Route("api/secure/users/edit", name="app_api_user_edit", methods={"PATCH"})
      */
     public function editUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine): Response
@@ -215,6 +229,8 @@ class UserController extends AbstractController
     /**
      * Get all artists
      *
+     * @param UserRepository $userRepository
+     * @return Response
      * @Route ("api/artists", name="app_api_artists", methods={"GET"})
      */
     public function getArtists(UserRepository $userRepository) : Response
