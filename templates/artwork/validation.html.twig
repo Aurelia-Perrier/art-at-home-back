@@ -27,7 +27,7 @@
             {% else %}
             <td>{{ artwork.description }}</td>
             {% endif %}
-            <td><img src="{{ artwork.picture }}" height="300px"></td>
+            <td><img src="{{ artwork.picture }}" width="100em" class="myImg"></td>
             <td>
                 <form action="{{ path('app_artwork_validate', {'id': artwork.id}) }}" method="post">
                     <input type="hidden" name="token" value="{{ csrf_token('validate-item') }}" />
@@ -49,4 +49,13 @@
         {% endfor %}
     </tbody>
 </table>
+
+{# Modal #}
+<div id="myImgModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="modalImg">
+</div>
+{% block javascript %}
+<script src="{{asset('js/picture-modal.js')}}"></script>
+{% endblock %}
 {% endblock %}
