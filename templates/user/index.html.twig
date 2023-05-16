@@ -71,9 +71,7 @@
     </tbody>
 </table>
 
-<script>
-    function submitForm(){
-        document.getElementById('sort-form').submit();
-    }
-</script>
+{% block javascripts %}
+<script src="{{ asset('js/select-form.js')}}"></script>
+{% endblock %}
 {% endblock %}
