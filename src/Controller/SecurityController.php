@@ -38,7 +38,7 @@ class SecurityController extends AbstractController
      * @Route("/logout_message", name="logout_message")
      */
     public function logoutMessage()
-    {
+    {  
         $this->addFlash('success', "Vous avez été déconnecté, au revoir!");
         return $this->redirectToRoute('app_home_backoffice');
     }

@@ -31,7 +31,7 @@ class Artwork
     private $title;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="string", length=530, nullable=true)
      * @Groups({"get_exhibitions_collection", "get_artwork_by_exhibition"})
      */
     private $description;

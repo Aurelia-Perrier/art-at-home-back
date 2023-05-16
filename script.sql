@@ -10,7 +10,7 @@ SET NAMES utf8mb4;
 CREATE TABLE `artwork` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` varchar(530) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `picture` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `slug` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` tinyint(1) DEFAULT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE `artwork` (
   PRIMARY KEY (`id`),
   KEY `IDX_881FC5762A7D4494` (`exhibition_id`),
   CONSTRAINT `FK_881FC5762A7D4494` FOREIGN KEY (`exhibition_id`) REFERENCES `exhibition` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=190 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=197 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 TRUNCATE `artwork`;
 INSERT INTO `artwork` (`id`, `title`, `description`, `picture`, `slug`, `status`, `exhibition_id`) VALUES
@@ -198,6 +198,26 @@ TRUNCATE `contact`;
 INSERT INTO `contact` (`id`, `email`, `phone_number`) VALUES
 (1,	'artathome@gmail.com',	'01.02.03.04.05');
 
+CREATE TABLE `doctrine_migration_versions` (
+  `version` varchar(191) COLLATE utf8_unicode_ci NOT NULL,
+  `executed_at` datetime DEFAULT NULL,
+  `execution_time` int(11) DEFAULT NULL,
+  PRIMARY KEY (`version`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+TRUNCATE `doctrine_migration_versions`;
+INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
+('DoctrineMigrations\\Version20230412125739',	'2023-04-12 14:57:53',	53),
+('DoctrineMigrations\\Version20230412132327',	'2023-04-12 15:29:05',	78),
+('DoctrineMigrations\\Version20230412151130',	'2023-04-12 17:11:38',	43),
+('DoctrineMigrations\\Version20230417124911',	'2023-04-17 18:52:29',	37),
+('DoctrineMigrations\\Version20230418085545',	'2023-04-18 10:56:02',	79),
+('DoctrineMigrations\\Version20230425093717',	'2023-04-25 11:37:27',	67),
+('DoctrineMigrations\\Version20230502140417',	'2023-05-02 16:04:44',	88),
+('DoctrineMigrations\\Version20230512075853',	'2023-05-12 09:59:06',	104),
+('DoctrineMigrations\\Version20230516123503',	'2023-05-16 14:35:21',	134),
+('DoctrineMigrations\\Version20230516123654',	'2023-05-16 14:37:03',	59);
+
 CREATE TABLE `exhibition` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -223,7 +243,7 @@ INSERT INTO `exhibition` (`id`, `title`, `slug`, `start_date`, `end_date`, `stat
 (7,	'Fragments de mémoire',	'fragements-de-memoire',	'2023-04-20',	'2023-08-20',	1,	4,	'L\'exposition est une exploration de la mémoire humaine à travers l\'art. Les œuvres présentées cherchent à capturer des souvenirs et des expériences passées en utilisant une variété de médias artistiques. C\'est une célébration de la richesse et de la complexité de la mémoire humaine. Les visiteurs sont invités à contempler les différentes manières dont l\'artiste explore les thèmes de la nostalgie, de la mémoire collective et de la transformation de la mémoire à travers l\'art.'),
 (8,	'Art de la lumière',	'art-de-la-lumiere',	'2023-04-20',	'2023-08-20',	1,	5,	'C\'est une célébration de la façon dont l\'artiste utilise la lumière pour créer des œuvres d\'art captivantes. L\'exposition présente une variété d\'œuvres d\'art qui utilisent la lumière de différentes manières pour créer des effets visuels intéressants et des émotions. Les effets futuristes sont incroyables. L\'expérimentation de la lumière est au cœur de cette exposition aussi unique qu\'innovante'),
 (9,	'Inspiration cosmique',	'inspiration-cosmique',	'2023-04-20',	'2023-08-20',	1,	6,	'L\'artiste nous amène vers une célébration de l\'Univers et de son influence sur l\'imagination et la créativité humaines. Les œuvres présentées dans cette exposition cherchent à explorer les idées de l\'espace, de l\'astrophysique et de l\'exploration spatiale. Les œuvres célèbrent la beauté de l\'espace et de l\'Univers. Les visiteurs sont invités à contempler les différentes manières dont les artistes explorent les thèmes de l\'espace, de l\'astrophysique et de l\'exploration spatiale à travers l\'art.'),
-(10,	'Dialogues silencieux',	'dialogues-silencieux',	'2023-04-20',	'2023-08-20',	1,	5,	'C\'est une exploration de la communication non verbale et des expressions visuelles qui transcendent les mots. Les œuvres d\'art présentées dans cette exposition cherchent à transmettre des émotions, des idées et des réflexions en utilisant des formes, des couleurs, des textures et des mouvements. Vous serez accueillis par des œuvres d\'art silencieuses mais puissantes.');
+(10,	'Dialogues silencieux',	'dialogues-silencieux',	'2023-04-20',	'2023-08-20',	1,	8,	'C\'est une exploration de la communication non verbale et des expressions visuelles qui transcendent les mots. Les œuvres d\'art présentées dans cette exposition cherchent à transmettre des émotions, des idées et des réflexions en utilisant des formes, des couleurs, des textures et des mouvements. Vous serez accueillis par des œuvres d\'art silencieuses mais puissantes.');
 
 CREATE TABLE `legal_notices` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -235,6 +255,22 @@ TRUNCATE `legal_notices`;
 INSERT INTO `legal_notices` (`id`, `content`) VALUES
 (1,	'<p>\r\n          Identification du propriétaire du site : \r\n@Maïté Soulard\r\n / \r\n@Aurélia PERRIER\r\n / @Mathieu / \r\n@David B.\r\n\r\n        </p>\r\n        <p>\r\n          Propriété intellectuelle : Tous les contenus présents sur le site de\r\n          littérature (textes, images, vidéos, logos, etc.) sont la propriété\r\n          exclusive de WriterTalent. ou de ses partenaires. Toute reproduction,\r\n          modification, distribution ou exploitation de ces contenus sans\r\n          autorisation écrite préalable est strictement interdite.\r\n        </p>\r\n        <p>\r\n          Données personnelles : Ce site collecte des données personnelles des\r\n          utilisateurs (nom, prénom, adresse e-mail, etc.) dans le cadre de\r\n          l’utilisation du site et des services proposés. Ces données sont\r\n          traitées conformément à la réglementation en vigueur et aux dispositions\r\n          de la politique de confidentialité accessible sur le site.\r\n        </p>\r\n        <p>\r\n          Cookies: Ce site utilise des cookies pour améliorer l’expérience\r\n          utilisateur et proposer des services adaptés aux préférences des\r\n          utilisateurs. Les utilisateurs peuvent gérer les cookies en fonction de\r\n          leurs préférences via les paramètres de leur navigateur.\r\n        </p>\r\n        <p>\r\n          Limitation de responsabilité : Ce site met tout en œuvre pour garantir\r\n          l’exactitude et la mise à jour des informations diffusées sur le site.\r\n          Cependant, les éditeurs de WriterTalent ne peuvent être tenus\r\n          responsables des erreurs ou omissions dans ces informations. De même,\r\n          les éditeurs de WriterTalent ne peuvent être tenus responsables des\r\n          dommages directs ou indirects résultant de l’utilisation du site ou des\r\n          informations qu’il contient.\r\n        </p>\r\n        <p>\r\n          Droit applicable et juridiction compétente : Les présentes mentions\r\n          légales sont soumises au droit français. Tout litige relatif à\r\n          l’utilisation du site sera de la compétence exclusive des tribunaux\r\n          français.\r\n        </p>\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n');
 
+CREATE TABLE `messenger_messages` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `body` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `headers` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue_name` varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` datetime NOT NULL,
+  `available_at` datetime NOT NULL,
+  `delivered_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_75EA56E0FB7336F0` (`queue_name`),
+  KEY `IDX_75EA56E0E3BD61CE` (`available_at`),
+  KEY `IDX_75EA56E016BA31DB` (`delivered_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+TRUNCATE `messenger_messages`;
+
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(180) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -243,7 +279,7 @@ CREATE TABLE `user` (
   `lastname` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `firstname` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `nickname` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `avatar` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT 'https://cdn.pixabay.com/photo/2014/04/02/10/25/man-303792_640.png',
+  `avatar` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `slug` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_of_birth` date DEFAULT NULL,
   `presentation` varchar(800) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -263,4 +299,4 @@ INSERT INTO `user` (`id`, `email`, `roles`, `password`, `lastname`, `firstname`,
 (8,	'seb.lemaitre@gmail.com',	'[\"ROLE_ARTIST\"]',	'$2y$13$6M3bVDVn8BPs09HDqQyRh.wJYFxB1zVlzawxVDnwa3pUMr2cyGoNy',	'Lemaitre',	'Sébastien',	NULL,	'https://picsum.photos/id/26/50/50',	'sebastien-lemaitre',	NULL,	'je suis laurent, coucou c\'est moi laurent j\'adore la psicine et la plage. Mon plat préféré c\'est les grenouilles miaaaaaaaaaammmmmmmm'),
 (9,	'chromatix@gmail.com',	'[\"ROLE_ARTIST\"]',	'$2y$13$6M3bVDVn8BPs09HDqQyRh.wJYFxB1zVlzawxVDnwa3pUMr2cyGoNy',	'Rossi',	'Maurice',	'Chromatix',	'https://cdn.pixabay.com/photo/2021/01/21/16/44/model-5937809_640.jpg',	'chromatix',	'1956-04-21',	'Je suis un artiste dévoué et passionné qui travaille dans une variété de médiums, notamment la peinture, la sculpture et la photographie. Originaire de France, j\'ai commencé à m\'intéresser à l\'art dès mon plus jeune âge et ai rapidement découvert ma passion pour la création. Au fil du temps, j\'ai développé mon propre style distinctif qui se caractérise par une palette de couleurs riches et vibrantes et une esthétique élégante et sophistiquée. J\'utilise souvent des formes géométriques et des motifs abstraits pour créer des œuvres d\'art qui sont à la fois intrigantes et captivantes.');
 
--- 2023-05-15 14:18:34
+-- 2023-05-16 12:37:49

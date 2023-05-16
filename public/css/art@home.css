@@ -1,124 +1,121 @@
 body{
-    font-family: 'Albert Sans', sans-serif;
-    background-color: #fdfaf5 ;
+  font-family: 'Albert Sans', sans-serif;
+  background-color: #fdfaf5 ;
 }
 
 h1 {
-    font-family: 'Averia Libre', display;
-    color: #D6B041;
+  font-family: 'Averia Libre', display;
+  color: #D6B041;
 }
 
 nav{
 
-    opacity: 0.89;
+  opacity: 0.89;
 }
 
 .form {
     
-    background-color: rgb(208, 185, 174,0.2);
-    border-radius: 10px;
-    padding : 3rem;
-    margin : 1rem;
+  background-color: rgb(208, 185, 174,0.2);
+  border-radius: 10px;
+  padding : 3rem;
+  margin : 1rem;
 }
 
 .input-group {
-    gap: 1rem;
-    border-radius: 10px;
+  gap: 1rem;
+  border-radius: 10px;
 }
 
 .presentation {
-    height : 5rem;
+  height : 5rem;
 }
 
 #buttonUp
 {
-    position: fixed;
-    top: 90%;
-    left: 97.5%;
-    color: black;
-    width: 1.5em;
+  position: fixed;
+  top: 90%;
+  left: 97.5%;
+  color: black;
+  width: 1.5em;
 }
 
 #backButton
 {
-    display: block;
-    position: absolute;
-    left: 92%;
-    top: 76%;
-    width: 2em;
-    color: black;
-    margin-top: 2em;
+  display: flex;
+  justify-content: flex-end;
+  color: black;
+  margin-top: 2em;
     
 }
 
 #main
 {
-    padding-top: 8em!important;
-    padding-left: 5em!important;
-    padding-right: 5em!important;
+  padding-top: 8em!important;
+  padding-left: 5em!important;
+  padding-right: 5em!important;
 }
 
 /* Modal*/
 
   
-  .myImg:hover {opacity: 0.7;}
+.myImg:hover {opacity: 0.7;}
   
-  /* The Modal (background) */
-  .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
-    left: 0;
-    top: 14%;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
-  }
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 14%;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
   
-  /* Modal Content (Image) */
+/* Modal Content (Image) */
+.modal-content {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+}
+  
+/* Add Animation - Zoom in the Modal */
+.modal-content, #caption {
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+  
+@keyframes zoom {
+  from {transform:scale(0)}
+  to {transform:scale(1)}
+}
+  
+/* The Close Button */
+.close {
+  position: absolute;
+  top: 1em;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+  
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+  
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
   .modal-content {
-    margin: auto;
-    display: block;
-    width: 80%;
-    max-width: 700px;
+    width: 100%;
   }
-  
-  /* Add Animation - Zoom in the Modal */
-  .modal-content, #caption {
-    animation-name: zoom;
-    animation-duration: 0.6s;
-  }
-  
-  @keyframes zoom {
-    from {transform:scale(0)}
-    to {transform:scale(1)}
-  }
-  
-  /* The Close Button */
-  .close {
-    position: absolute;
-    top: 1em;
-    right: 35px;
-    color: #f1f1f1;
-    font-size: 40px;
-    font-weight: bold;
-    transition: 0.3s;
-  }
-  
-  .close:hover,
-  .close:focus {
-    color: #bbb;
-    text-decoration: none;
-    cursor: pointer;
-  }
-  
-  /* 100% Image Width on Smaller Screens */
-  @media only screen and (max-width: 700px){
-    .modal-content {
-      width: 100%;
-    }
-  }
+}
 
