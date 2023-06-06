@@ -224,26 +224,4 @@ class UserController extends AbstractController
             ['groups' => 'get_user']
         );
     }
-
-
-    /**
-     * Get all artists
-     *
-     * @param UserRepository $userRepository
-     * @return Response
-     * @Route ("api/artists", name="app_api_artists", methods={"GET"})
-     */
-    public function getArtists(UserRepository $userRepository) : Response
-    {
-        //fetch all users with role = ROLE_ARTIST
-        $artists = $userRepository->getUserWithRoleArtist();
-
-        //return status 200
-        return $this->json(
-            $artists,
-            Response::HTTP_OK,
-            [],
-            ['groups' => 'get_user']
-        );
-    }
 }
