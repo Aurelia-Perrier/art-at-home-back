@@ -6,16 +6,18 @@ use App\Entity\User;
 use App\Service\MySlugger;
 use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
-use Symfony\Component\Security\Csrf\CsrfToken;
 
 
 class UserController extends AbstractController
@@ -71,6 +73,14 @@ class UserController extends AbstractController
         }
 
         $csrfToken = $csrfTokenManager->getToken('arthome')->getValue();
+        $cookie = Cookie::create('csrfToken', $csrfToken)
+        ->withHttpOnly(true)
+        ->withSameSite('Strict')
+        ->withSecure(true);
+
+        $response = new Response();
+        $response->headers->setCookie($cookie);
+
      
         // setting an empty array
         $data = [];
@@ -87,7 +97,7 @@ class UserController extends AbstractController
             'role' => $role,
             'exhibitions' => $exhibitions,
             'favorites' => $favoritesArray,
-            'csrf_token' => $csrfToken
+            // 'csrfToken' => $csrfToken
 
         ];
 
@@ -181,7 +191,7 @@ class UserController extends AbstractController
      * @return Response
      * @Route("api/secure/users/edit", name="app_api_user_edit", methods={"PATCH"})
      */
-    public function editUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine): Response
+    public function editUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, CsrfTokenManagerInterface $csrfTokenManager): Response
     {
 
         // getting the logged user
@@ -190,6 +200,14 @@ class UserController extends AbstractController
 
         //Get Json content
         $jsonContent = $request->getContent();
+
+        // Récupérer le token CSRF envoyé dans la requête
+        $token = $request->headers->get('X-CSRF-TOKEN');
+
+        // Vérifier le token CSRF
+        if (!$csrfTokenManager->isTokenValid(new CsrfToken('arthome', $token))) {
+            throw new AccessDeniedHttpException('Invalid CSRF token');
+        }
 
         try {
             // Convert Json in doctrine entity
