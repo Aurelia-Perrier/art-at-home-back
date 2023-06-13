@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use App\Repository\ArtworkRepository;
 use App\Service\MySlugger;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
