@@ -173,7 +173,7 @@ class ArtworkController extends AbstractController
     /**
      * Validate an artwork
      * 
-     * @Route("/artworks/{id}/validate", name ="app_artwork_validate", methods={"POST"}, requirements={"id"="\d+"})
+     * @Route("/{id}/validate", name ="app_artwork_validate", methods={"POST"}, requirements={"id"="\d+"})
      */
     public function validate(EntityManagerInterface $entityManager, Artwork $artwork = null, Request $request): Response
     {
@@ -209,7 +209,7 @@ class ArtworkController extends AbstractController
      * @param ArtworkRepository $artworkRepository
      * @param Request $request
      * @return Response
-     * @Route ("/artworks/{id}/decline", name="app_artwork_decline", methods={"POST"}, requirements={"id"="\d+"})
+     * @Route ("/{id}/decline", name="app_artwork_decline", methods={"POST"}, requirements={"id"="\d+"})
      */
     public function decline(Artwork $artwork = null, ArtworkRepository $artworkRepository, Request $request): Response
     {
