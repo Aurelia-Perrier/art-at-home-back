@@ -48,9 +48,9 @@ class LoginController extends AbstractController
 
         // Configuration du cookie sécurisé
         $cookie = Cookie::create('jwtToken', $jwtToken)
-            ->withHttpOnly(true)
-            ->withSameSite('Strict')
-            ->withSecure(true);
+            ->withHttpOnly(true) // Empêche l'accès depuis JavaScript
+            ->withSameSite('Strict') // Atténue les risques de CSRF
+            ->withSecure(true); // Assurez-vous d'utiliser HTTPS pour activer le drapeau Secure
 
         // Stockage du jeton JWT dans le TokenStorage
         $token = new JWTUserToken($user->getRoles(), $user, $jwtToken);
@@ -58,7 +58,9 @@ class LoginController extends AbstractController
 
         // Création de la réponse avec le cookie sécurisé
         $response = new Response();
+        
         $response->headers->setCookie($cookie);
+        
         return $response;
     }
 }
