@@ -15,18 +15,18 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         #on place nos firewalls de lexikjwt avant main !
-        login:
-            # on définit la config de tous les endpoints qui commencent par /api/login
-            pattern: ^/api/login
-            # stateless indique que la sécurité du firewall sera sans état (le server ne stock pas l'état de l'utilisateur authentifié)
-            stateless: true
-            json_login: 
-                # le chemin pour obtenir le token
-                check_path: /api/login_check
-                # on gère le cas, en cas de réussite
-                success_handler: lexik_jwt_authentication.handler.authentication_success
-                # on gère le cas, en cas d'erreur
-                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+        # login:
+        #     # on définit la config de tous les endpoints qui commencent par /api/login
+        #     pattern: ^/api/login
+        #     # stateless indique que la sécurité du firewall sera sans état (le server ne stock pas l'état de l'utilisateur authentifié)
+        #     stateless: true
+        #     json_login: 
+        #         # le chemin pour obtenir le token
+        #         check_path: /api/login
+        #         # on gère le cas, en cas de réussite
+        #         success_handler: lexik_jwt_authentication.handler.authentication_success
+        #         # on gère le cas, en cas d'erreur
+        #         failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
 
         api_secure:
