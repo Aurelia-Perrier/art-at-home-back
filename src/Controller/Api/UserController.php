@@ -3,7 +3,6 @@
 namespace App\Controller\Api;
 
 use App\Entity\User;
-use App\Repository\ArtworkRepository;
 use App\Repository\UserRepository;
 use App\Service\MySlugger;
 use Doctrine\Persistence\ManagerRegistry;

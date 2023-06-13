@@ -38,7 +38,7 @@ class AutoSluggerUpdate
             } else {
     
                 //slugifying firstname and lastname
-                $fullname = $entity->getFirstname() . ' ' . $entity->getLastname();
+                $fullname = $entity->getFullName();
                 $slug = $this->slugger->slugify($fullname);
                 $entity->setSlug($slug);
             }

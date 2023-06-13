@@ -25,7 +25,7 @@
             </ul>
             {% if artworksNotValidate.checkIfArtworkToValidate %}
             <a href="{{ path('app_validation_waiting')}}" class="btn mb-4 mt-4 position-relative" style="background-color: #CC920D;">Oeuvres en attente de
-                validation<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill" style="background-color: #7B7870;">{{artworksNotValidate.checkIfArtworkToValidate|length}}<span class="visually-hidden">unread messages</span></span></a>
+                validation<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill" style="background-color: #7B7870;">{{artworksNotValidate.checkIfArtworkToValidate|length}}</span></a>
             {% endif %}
 
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
