@@ -72,15 +72,8 @@ class UserController extends AbstractController
             $favoritesArray[] = $id;
         }
 
-        $csrfToken = $csrfTokenManager->getToken('arthome')->getValue();
-        $cookie = Cookie::create('csrfToken', $csrfToken)
-        ->withHttpOnly(true)
-        ->withSameSite('Strict')
-        ->withSecure(true);
-
-        $response = new Response();
-        $response->headers->setCookie($cookie);
-
+        $csrfToken = $csrfTokenManager->getToken('csrfToken')->getValue();
+        $cookie = Cookie::create('csrfToken', $csrfToken);
      
         // setting an empty array
         $data = [];
@@ -97,16 +90,12 @@ class UserController extends AbstractController
             'role' => $role,
             'exhibitions' => $exhibitions,
             'favorites' => $favoritesArray,
-            // 'csrfToken' => $csrfToken
-
         ];
 
         //sending the response with all data
-        return $this->json(
-            $data,
-            Response::HTTP_OK
-
-        );
+        $response = $this->json($data, Response::HTTP_OK);
+        $response->headers->setCookie($cookie);
+        return $response;
     }
 
     /**
@@ -198,16 +187,16 @@ class UserController extends AbstractController
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
 
-        //Get Json content
-        $jsonContent = $request->getContent();
-
         // Récupérer le token CSRF envoyé dans la requête
-        $token = $request->headers->get('X-CSRF-TOKEN');
+        $submittedtoken = $request->cookies->get('csrfToken');
 
         // Vérifier le token CSRF
-        if (!$csrfTokenManager->isTokenValid(new CsrfToken('arthome', $token))) {
+        if (!$csrfTokenManager->isTokenValid(new CsrfToken('csrfToken', $submittedtoken))) {
             throw new AccessDeniedHttpException('Invalid CSRF token');
         }
+
+        //Get Json content
+        $jsonContent = $request->getContent();
 
         try {
             // Convert Json in doctrine entity
