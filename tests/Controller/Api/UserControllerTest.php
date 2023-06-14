@@ -9,7 +9,7 @@ class UserControllerTest extends WebTestCase
 {
 
     /**
-     * Test for fetching informations for profile page
+     * Test fetching informations for profile page
      *
      */
     public function testGetInformationForProfile(): void
@@ -29,7 +29,7 @@ class UserControllerTest extends WebTestCase
     }
 
     /**
-     * Test route for create an user   
+     * Test route to create an user   
      */
     public function testCreateUser(): void
     {

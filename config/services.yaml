@@ -34,18 +34,6 @@ services:
         arguments:
         # parameters name
             $toLower: true
-
-    App\EventListener\AutoSluggerCreate:
-        tags:
-            -
-                name: 'doctrine.event_listener'
-                event: 'prePersist'
-    
-    App\EventListener\AutoSluggerUpdate:
-        tags:
-            -
-                name: 'doctrine.event_listener'
-                event: 'preUpdate'
     
     App\Service\ArtworkValidateLayout:
         public: true
