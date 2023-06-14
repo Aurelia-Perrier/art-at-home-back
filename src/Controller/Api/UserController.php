@@ -3,17 +3,22 @@
 namespace App\Controller\Api;
 
 use App\Entity\User;
-use App\Repository\UserRepository;
 use App\Service\MySlugger;
+use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+
 
 class UserController extends AbstractController
 {
@@ -23,15 +28,13 @@ class UserController extends AbstractController
      * @return Response
      * @Route("api/secure/users/profile", name="app_api_users_profile", methods={"GET"})
      */
-    public function getInformationForProfile(): Response
+    public function getInformationForProfile(CsrfTokenManagerInterface $csrfTokenManager): Response
     {
         // getting the logged user
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
 
-        // setting an empty array
-        $data = [];
-
+        
         //fetching information about logged user
         $nickname = $user->getNickname();
         $firstname = $user->getFirstname();
@@ -41,13 +44,13 @@ class UserController extends AbstractController
         $presentation = $user->getPresentation();
         $dateOfBirth = $user->getDateOfBirth();
         $role = $user->getRoles();
-
+        
         //fetching exhibitions of user
         $exhibitionFetched = $user->getExhibition();
-
+        
         //declaring an empty array
         $exhibitions = [];
-
+        
         //loop on each exhibition
         foreach ($exhibitionFetched as $exhibition) {
             $id = $exhibition->getId();
@@ -59,15 +62,22 @@ class UserController extends AbstractController
                 'description' => $description
             ];
         }
-
+        
         $favorites = $user->getFavorites();
         $favoritesArray =[];
         foreach($favorites as $favorite)
         {
-
+            
             $id = $favorite->getId();
             $favoritesArray[] = $id;
         }
+
+        $csrfToken = $csrfTokenManager->getToken('csrfToken')->getValue();
+        $cookie = Cookie::create('csrfToken', $csrfToken);
+     
+        // setting an empty array
+        $data = [];
+
         // putting the informations in the empty array
         $data = [
             'nickname' => $nickname,
@@ -79,16 +89,13 @@ class UserController extends AbstractController
             'presentation' => $presentation,
             'role' => $role,
             'exhibitions' => $exhibitions,
-            'favorites' => $favoritesArray
-
+            'favorites' => $favoritesArray,
         ];
 
         //sending the response with all data
-        return $this->json(
-            $data,
-            Response::HTTP_OK
-
-        );
+        $response = $this->json($data, Response::HTTP_OK);
+        $response->headers->setCookie($cookie);
+        return $response;
     }
 
     /**
@@ -173,12 +180,20 @@ class UserController extends AbstractController
      * @return Response
      * @Route("api/secure/users/edit", name="app_api_user_edit", methods={"PATCH"})
      */
-    public function editUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine): Response
+    public function editUser(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, ManagerRegistry $doctrine, CsrfTokenManagerInterface $csrfTokenManager): Response
     {
 
         // getting the logged user
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
+
+        // Récupérer le token CSRF envoyé dans la requête
+        $submittedtoken = $request->cookies->get('csrfToken');
+
+        // Vérifier le token CSRF
+        if (!$csrfTokenManager->isTokenValid(new CsrfToken('csrfToken', $submittedtoken))) {
+            throw new AccessDeniedHttpException('Invalid CSRF token');
+        }
 
         //Get Json content
         $jsonContent = $request->getContent();
