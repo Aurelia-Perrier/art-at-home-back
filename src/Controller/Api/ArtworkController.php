@@ -192,20 +192,12 @@ class ArtworkController extends AbstractController
             throw new AccessDeniedHttpException('Invalid CSRF token');
         }
 
-        //fetch exhibiton depending on artwork
-        $exhibition = $artwork->getExhibition();
         // remove entity artwork
         $entityManager->remove($artwork);
         $entityManager->flush();
 
-        //fetch artworks of the exhibition
-        $newArtworksList = $exhibition->getArtwork();
-
         //return response 
-        return $this->json(
-            $newArtworksList,
-            Response::HTTP_NO_CONTENT,
-        );
+        return $this->json(Response::HTTP_OK);
     }
 
     /**

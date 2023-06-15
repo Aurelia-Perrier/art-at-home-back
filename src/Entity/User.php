@@ -56,10 +56,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id"})
+     * @Groups({"get_exhibitions_collection", "get_exhibition_by_id", "get_user"})
      * @Assert\NotBlank(groups={"registration"})
      * @Assert\Regex("/^[a-zA-ZÀ-úÀ-ÿÀ-ÖØ-öø-ÿ '-]*$/")
-     * @Groups({"get_exhibitions_collection", "get_user"})
      */
     private $lastname;
 
