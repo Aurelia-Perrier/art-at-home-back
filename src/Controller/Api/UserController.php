@@ -73,7 +73,17 @@ class UserController extends AbstractController
         }
 
         $csrfToken = $csrfTokenManager->getToken('csrfToken')->getValue();
-        $cookie = Cookie::create('csrfToken', $csrfToken);
+        $cookie = Cookie::create(
+            'csrfToken', // Nom du cookie
+            $csrfToken, // Valeur
+            0, // Expiration du cookie (0 pour la durée de session)
+            '/', // Chemin du serveur principal
+            null, // Nom de domaine principal
+            false, // HTTPS seulement
+            true, // Disponible uniquement dans le protocole HTTP
+            false, // Cookie sécurisé (marqué comme Secure)
+            'strict' // SameSite: Strict
+        );
      
         // setting an empty array
         $data = [];

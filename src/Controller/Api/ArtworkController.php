@@ -9,10 +9,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 
 
@@ -28,11 +31,18 @@ class ArtworkController extends AbstractController
      * @return Response
      * @Route("/api/secure/artworks/new", name="app_api_artwork_new", methods={"POST"})
      */
-    public function createArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator): Response
+    public function createArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator, CsrfTokenManagerInterface $csrfTokenManager): Response
     {
         //Fetch the json content
         $jsonContent = $request->getContent();
+        
+        // Récupérer le token CSRF envoyé dans la requête
+        $submittedtoken = $request->cookies->get('csrfToken');
 
+        // Vérifier le token CSRF
+        if (!$csrfTokenManager->isTokenValid(new CsrfToken('csrfToken', $submittedtoken))) {
+            throw new AccessDeniedHttpException('Invalid CSRF token');
+        }
 
         // Checking if json format is respected
         //if not, throw an error
@@ -93,13 +103,22 @@ class ArtworkController extends AbstractController
      * @return Response
      * @Route("api/secure/artworks/{id}/edit", name="app_api_artwork_edit", requirements={"id"="\d+"}, methods={"PATCH"})
      */
-    public function editArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator, Artwork $artworkToEdit = null): Response
+    public function editArtwork(Request $request, ManagerRegistry $doctrine, SerializerInterface $serializer, ValidatorInterface $validator, Artwork $artworkToEdit = null, CsrfTokenManagerInterface $csrfTokenManager): Response
     {
 
         // 404 ?
         if ($artworkToEdit === null) {
             return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
         }
+
+        // Récupérer le token CSRF envoyé dans la requête
+        $submittedtoken = $request->cookies->get('csrfToken');
+
+        // Vérifier le token CSRF
+        if (!$csrfTokenManager->isTokenValid(new CsrfToken('csrfToken', $submittedtoken))) {
+            throw new AccessDeniedHttpException('Invalid CSRF token');
+        }
+
         //Fetch the json content
         $jsonContent = $request->getContent();
 
@@ -157,12 +176,20 @@ class ArtworkController extends AbstractController
      * @return Response
      * @Route("api/secure/artworks/{id}/delete", name="app_api_artwork_delete",requirements={"id"="\d+"}, methods={"DELETE"})
      */
-    public function deleteArtwork(Artwork $artwork = null, EntityManagerInterface $entityManager): Response
+    public function deleteArtwork(Request $request, Artwork $artwork = null, EntityManagerInterface $entityManager, CsrfTokenManagerInterface $csrfTokenManager): Response
     {
 
         //404?
         if ($artwork === null) {
             return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
+        }
+
+        // Récupérer le token CSRF envoyé dans la requête
+        $submittedtoken = $request->cookies->get('csrfToken');
+
+        // Vérifier le token CSRF
+        if (!$csrfTokenManager->isTokenValid(new CsrfToken('csrfToken', $submittedtoken))) {
+            throw new AccessDeniedHttpException('Invalid CSRF token');
         }
 
         //fetch exhibiton depending on artwork

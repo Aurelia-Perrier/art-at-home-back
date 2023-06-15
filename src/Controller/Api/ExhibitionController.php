@@ -7,10 +7,13 @@ use App\Repository\ExhibitionRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 
 class ExhibitionController extends AbstractController
@@ -41,11 +44,19 @@ class ExhibitionController extends AbstractController
      * @return Response
      * @Route("/api/secure/exhibitions/new", name="app_api_exhibition_new", methods={"POST"})
      */
-    public function createExhibition(Request $request, SerializerInterface $serializer, ManagerRegistry $doctrine, ValidatorInterface $validator): Response
+    public function createExhibition(Request $request, SerializerInterface $serializer, ManagerRegistry $doctrine, ValidatorInterface $validator, CsrfTokenManagerInterface $csrfTokenManager): Response
     {
 
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
+
+        // Récupérer le token CSRF envoyé dans la requête
+        $submittedtoken = $request->cookies->get('csrfToken');
+
+        // Vérifier le token CSRF
+        if (!$csrfTokenManager->isTokenValid(new CsrfToken('csrfToken', $submittedtoken))) {
+            throw new AccessDeniedHttpException('Invalid CSRF token');
+        }
 
         //Get Json content
         $jsonContent = $request->getContent();
