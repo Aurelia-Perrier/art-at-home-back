@@ -72,16 +72,17 @@ class UserController extends AbstractController
             $favoritesArray[] = $id;
         }
 
+        //creating cookie
         $csrfToken = $csrfTokenManager->getToken('csrfToken')->getValue();
         $cookie = Cookie::create(
-            'csrfToken', // Nom du cookie
-            $csrfToken, // Valeur
-            0, // Expiration du cookie (0 pour la durée de session)
-            '/', // Chemin du serveur principal
-            null, // Nom de domaine principal
-            false, // HTTPS seulement
-            true, // Disponible uniquement dans le protocole HTTP
-            false, // Cookie sécurisé (marqué comme Secure)
+            'csrfToken', // Name of the cookie
+            $csrfToken, // value
+            0, // Expiration (session)
+            '/', // Main path to main server
+            null, // Domain name
+            false, // HTTPS only
+            true, // Only available in HTTP protocol
+            false, // secure cookie
             'strict' // SameSite: Strict
         );
      
@@ -197,10 +198,10 @@ class UserController extends AbstractController
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
 
-        // Récupérer le token CSRF envoyé dans la requête
+        // Get CSRF token in request
         $submittedtoken = $request->cookies->get('csrfToken');
 
-        // Vérifier le token CSRF
+        // check CSRF token 
         if (!$csrfTokenManager->isTokenValid(new CsrfToken('csrfToken', $submittedtoken))) {
             throw new AccessDeniedHttpException('Invalid CSRF token');
         }

@@ -50,10 +50,10 @@ class ExhibitionController extends AbstractController
         /** @var \App\Entity\User $user */
         $user = $this->getUser();
 
-        // Récupérer le token CSRF envoyé dans la requête
+        // Get CSRF Token
         $submittedtoken = $request->cookies->get('csrfToken');
 
-        // Vérifier le token CSRF
+        // Check CSRF Token
         if (!$csrfTokenManager->isTokenValid(new CsrfToken('csrfToken', $submittedtoken))) {
             throw new AccessDeniedHttpException('Invalid CSRF token');
         }
