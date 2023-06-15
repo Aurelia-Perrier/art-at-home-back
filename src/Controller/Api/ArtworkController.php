@@ -36,10 +36,10 @@ class ArtworkController extends AbstractController
         //Fetch the json content
         $jsonContent = $request->getContent();
         
-        // Récupérer le token CSRF envoyé dans la requête
+        // Get CSRF Token
         $submittedtoken = $request->cookies->get('csrfToken');
 
-        // Vérifier le token CSRF
+        // Check CSRF Token
         if (!$csrfTokenManager->isTokenValid(new CsrfToken('csrfToken', $submittedtoken))) {
             throw new AccessDeniedHttpException('Invalid CSRF token');
         }
@@ -111,16 +111,17 @@ class ArtworkController extends AbstractController
             return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
         }
 
-        // Récupérer le token CSRF envoyé dans la requête
+        // Get CSRF Token
         $submittedtoken = $request->cookies->get('csrfToken');
 
-        // Vérifier le token CSRF
+        // Check CSRF Token
         if (!$csrfTokenManager->isTokenValid(new CsrfToken('csrfToken', $submittedtoken))) {
             throw new AccessDeniedHttpException('Invalid CSRF token');
         }
 
         //Fetch the json content
         $jsonContent = $request->getContent();
+
 
         // Checking if json format is respected
         //if not, throw an error
@@ -178,28 +179,28 @@ class ArtworkController extends AbstractController
      */
     public function deleteArtwork(Request $request, Artwork $artwork = null, EntityManagerInterface $entityManager, CsrfTokenManagerInterface $csrfTokenManager): Response
     {
-
         //404?
         if ($artwork === null) {
-            return $this->json(['error' => 'Oeuvre non trouvé.'], Response::HTTP_NOT_FOUND);
+            return $this->json(['error' => 'Oeuvre non trouvée.'], Response::HTTP_NOT_FOUND);
         }
 
-        // Récupérer le token CSRF envoyé dans la requête
+        // Get CSRF Token
         $submittedtoken = $request->cookies->get('csrfToken');
 
-        // Vérifier le token CSRF
+        // Check CSRF Token
         if (!$csrfTokenManager->isTokenValid(new CsrfToken('csrfToken', $submittedtoken))) {
             throw new AccessDeniedHttpException('Invalid CSRF token');
         }
 
         //fetch exhibiton depending on artwork
         $exhibition = $artwork->getExhibition();
+        //fetch artworks of the exhibition
+        $newArtworksList = $exhibition->getArtwork();
+        
         // remove entity artwork
         $entityManager->remove($artwork);
         $entityManager->flush();
 
-        //fetch artworks of the exhibition
-        $newArtworksList = $exhibition->getArtwork();
 
         //return response 
         return $this->json(

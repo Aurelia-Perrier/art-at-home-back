@@ -37,3 +37,16 @@ services:
     
     App\Service\ArtworkValidateLayout:
         public: true
+    
+    App\EventListener\AutoSluggerCreate:
+        tags:
+            -
+                name: 'doctrine.event_listener'
+                event: 'prePersist'
+    
+    App\EventListener\AutoSluggerUpdate:
+        tags:
+            -
+                name: 'doctrine.event_listener'
+                event: 'preUpdate'
+    

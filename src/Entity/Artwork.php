@@ -128,6 +128,7 @@ class Artwork
         return $this;
     }
 
+
     public function isStatus(): ?bool
     {
         return $this->status;
