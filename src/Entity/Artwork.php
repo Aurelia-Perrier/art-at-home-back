@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 
 /**
@@ -19,20 +20,20 @@ class Artwork
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"get_artwork_by_exhibition", "get_exhibitions_collection"})
+     * @Groups({"get_artwork_by_exhibition", "get_exhibitions_collection", "delete_artwork"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
-     * @Groups({"get_exhibitions_collection", "get_artwork_by_exhibition"})
+     * @Groups({"get_exhibitions_collection", "get_artwork_by_exhibition", "delete_artwork"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=530, nullable=true)
-     * @Groups({"get_exhibitions_collection", "get_artwork_by_exhibition"})
+     * @Groups({"get_exhibitions_collection", "get_artwork_by_exhibition", "delete_artwork"})
      */
     private $description;
 
@@ -40,25 +41,25 @@ class Artwork
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      * @Assert\Url
-     * @Groups({"get_exhibitions_collection", "get_artwork_by_exhibition"})
+     * @Groups({"get_exhibitions_collection", "get_artwork_by_exhibition", "delete_artwork"})
      */
     private $picture;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"get_exhibitions_collection"})
+     * @Groups({"get_exhibitions_collection", "delete_artwork"})
      */
     private $slug;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"get_exhibitions_collection"})
+     * @Groups({"get_exhibitions_collection", "delete_artwork"})
      */
     private $status;
 
     /**
      * @ORM\ManyToOne(targetEntity=Exhibition::class, inversedBy="artwork")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="SET NULL")
      * @Groups({"get_artwork_by_exhibition"})
      * @Assert\NotBlank
      */

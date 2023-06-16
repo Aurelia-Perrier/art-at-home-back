@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ExhibitionRepository;
-use DateInterval;
 use DateTime;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -59,6 +58,7 @@ class Exhibition
     /**
      * @ORM\OneToMany(targetEntity=Artwork::class, mappedBy="exhibition", orphanRemoval=true)
      * @Groups({"get_exhibitions_collection"})
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $artwork;
 

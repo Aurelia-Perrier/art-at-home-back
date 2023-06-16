@@ -17,7 +17,7 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
-
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ArtworkController extends AbstractController
 {
@@ -122,7 +122,6 @@ class ArtworkController extends AbstractController
         //Fetch the json content
         $jsonContent = $request->getContent();
 
-
         // Checking if json format is respected
         //if not, throw an error
         try {
@@ -192,10 +191,14 @@ class ArtworkController extends AbstractController
             throw new AccessDeniedHttpException('Invalid CSRF token');
         }
 
+        
         //fetch exhibiton depending on artwork
         $exhibition = $artwork->getExhibition();
         //fetch artworks of the exhibition
         $newArtworksList = $exhibition->getArtwork();
+
+        $artwork->setExhibition(null);
+        $exhibition->removeArtwork($artwork);
         
         // remove entity artwork
         $entityManager->remove($artwork);
