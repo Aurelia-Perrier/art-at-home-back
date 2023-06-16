@@ -26,13 +26,13 @@
     <tbody>
         {% for artwork in artworks %}
         <tr class="text-center">
-            <td>{{ artwork.title }}</td>
+            <td>{{ artwork.title|raw }}</td>
             {% if artwork.description is same as (null)%}
             <td>-</td>
             {% else %}
-            <td style="text-align: justify; width: 40rem;">{{ artwork.description }}</td>
+            <td style="text-align: justify; width: 40rem;">{{ artwork.description|raw }}</td>
             {% endif %}
-            <td style="text-align: end;"><img src="{{ artwork.picture }}" height="100px"></td>
+            <td style="text-align: end;"><img src="{{ artwork.picture|raw }}" height="100px"></td>
             <td>
                 <a href="{{ path('app_artwork_show', {'id': artwork.id}) }}" class="btn btn-outline-primary btn-sm">En
                     savoir plus</a>

@@ -25,18 +25,18 @@
     <tbody>
         {% for exhibition in exhibitions %}
         <tr class="text-center">
-            <td>{{ exhibition.title }}</td>
+            <td>{{ exhibition.title|raw }}</td>
             <td>{{ exhibition.endDate ? exhibition.endDate|date('Y-m-d') : '' }}</td>
             <td>{{ exhibition.status ? 'En cours' : 'Archivée' }}</td>
             {% if exhibition.description is same as (null) %}
             <td>-</td>
             {% else %}
-            <td style="text-align: justify;">{{ exhibition.description }}</td>
+            <td style="text-align: justify;">{{ exhibition.description|raw }}</td>
             {% endif %}
             {% if exhibition.artist.nickname is same as(null)%}
-            <td>{{exhibition.artist.getFullName}}</td>
+            <td>{{exhibition.artist.getFullName|raw}}</td>
             {% else %}
-            <td>{{ exhibition.artist.nickname}}</td>
+            <td>{{ exhibition.artist.nickname|raw}}</td>
                
             {% endif %}
             

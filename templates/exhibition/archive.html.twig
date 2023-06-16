@@ -14,12 +14,12 @@
     <tbody>
         {% for archiveExhibition in archiveExhibitions %}
         <tr class="text-center">
-            <td>{{ archiveExhibition.title }}</td>
+            <td>{{ archiveExhibition.title|raw }}</td>
             <td>{{ archiveExhibition.endDate ? archiveExhibition.endDate|date('Y-m-d') : '' }}</td>
             {% if archiveExhibition.description is same as (null) %}
             <td>-</td>
             {% else %}
-            <td style="text-align: justify;">{{ archiveExhibition.description }}</td>
+            <td style="text-align: justify;">{{ archiveExhibition.description|raw }}</td>
             {% endif %}
             <td>
                 <a href="{{ path('app_exhibitions_artworks', {'id': archiveExhibition.id })}}"

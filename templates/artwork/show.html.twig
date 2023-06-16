@@ -9,18 +9,18 @@
     <tbody>
         <tr>
             <th>Id</th>
-            <td>{{ artwork.id }}</td>
+            <td>{{ artwork.id|raw }}</td>
         </tr>
         <tr>
             <th>Titre</th>
-            <td>{{ artwork.title }}</td>
+            <td>{{ artwork.title|raw }}</td>
         </tr>
         <tr>
             <th>Description</th>
             {% if artwork.description is same as (null)%}
             <td>-</td>
             {% else %}
-            <td>{{ artwork.description }}</td>
+            <td>{{ artwork.description|raw }}</td>
             {% endif %}
         </tr>
         <tr>

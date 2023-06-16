@@ -9,11 +9,11 @@
     <tbody>
         <tr>
             <th>Id</th>
-            <td>{{ exhibition.id }}</td>
+            <td>{{ exhibition.id|raw }}</td>
         </tr>
         <tr>
             <th>Titre</th>
-            <td>{{ exhibition.title }}</td>
+            <td>{{ exhibition.title|raw }}</td>
         </tr>
         <tr>
             <th>Début de l'exposition</th>
@@ -32,7 +32,7 @@
             {% if exhibition.description is same as (null) %}
             <td>-</td>
             {% else %}
-            <td>{{ exhibition.description }}</td>
+            <td>{{ exhibition.description|raw }}</td>
             {% endif %}
 
         </tr>

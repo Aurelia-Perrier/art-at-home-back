@@ -20,12 +20,12 @@
     <tbody>
         {% for artwork in artworks %}
         <tr class="text-center">
-            <td>{{ artwork.id }}</td>
-            <td>{{ artwork.title }}</td>
+            <td>{{ artwork.id|raw }}</td>
+            <td>{{ artwork.title|raw }}</td>
             {% if artwork.description is same as (null)%}
             <td>-</td>
             {% else %}
-            <td>{{ artwork.description }}</td>
+            <td>{{ artwork.description|raw }}</td>
             {% endif %}
             <td><img src="{{ artwork.picture }}" width="100em" class="myImg"></td>
             <td>

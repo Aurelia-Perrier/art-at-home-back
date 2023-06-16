@@ -12,7 +12,7 @@
             à la liste des expositions</a></p>
     {% endif %}
     <div class="flex-grow-1">
-        <h1 class="text-center">Oeuvres de {{ exhibition.title}}</h1>
+        <h1 class="text-center">Oeuvres de {{ exhibition.title|raw}}</h1>
     </div>
 </div>
 <table class="table table-striped table-hover">
@@ -26,13 +26,13 @@
     <tbody>
         {% for relatedArtwork in relatedArtworks %}
         <tr class="text-center">
-            <td>{{ relatedArtwork.title }}</td>
+            <td>{{ relatedArtwork.title|raw }}</td>
             {% if relatedArtwork.description is same as (null)%}
             <td>-</td>
             {% else %}
-            <td style="text-align: justify; width: 40rem;">{{ relatedArtwork.description }}</td>
+            <td style="text-align: justify; width: 40rem;">{{ relatedArtwork.description|raw }}</td>
             {% endif %}
-            <td><img src="{{ relatedArtwork.picture }}" height="100px"></td>
+            <td><img src="{{ relatedArtwork.picture|raw }}" height="100px"></td>
         </tr>
         {% else %}
         <tr>

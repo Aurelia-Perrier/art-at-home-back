@@ -31,7 +31,7 @@
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <ul class="nav nav-underline d-flex align-items-center ">
                 <li>
-                    <h6 class="nav-item text-white mr-4 mt-1 "> Bonjour, {{app.user.firstname}}</h6>
+                    <h6 class="nav-item text-white mr-4 mt-1 "> Bonjour, {{app.user.firstname|raw}}</h6>
                 </li>
 
                 <li><a class="btn btn-danger me-2" href="{{ path('app_logout') }}">Déconnexion</a></li>

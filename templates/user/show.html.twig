@@ -9,11 +9,11 @@
     <tbody>
         <tr>
             <th>Id</th>
-            <td>{{ user.id }}</td>
+            <td>{{ user.id|raw }}</td>
         </tr>
         <tr>
             <th>Email</th>
-            <td>{{ user.email }}</td>
+            <td>{{ user.email|raw }}</td>
         </tr>
         <tr>
             <th>Roles</th>
@@ -21,18 +21,18 @@
         </tr>
         <tr>
             <th>Nom</th>
-            <td>{{ user.lastname }}</td>
+            <td>{{ user.lastname|raw }}</td>
         </tr>
         <tr>
             <th>Prénom</th>
-            <td>{{ user.firstname }}</td>
+            <td>{{ user.firstname|raw }}</td>
         </tr>
         <tr>
             <th>Pseudo</th>
             {% if user.nickname is same as (null) %}
             <td>-</td>
             {% else %}
-            <td>{{ user.nickname }}</td>
+            <td>{{ user.nickname|raw }}</td>
             {% endif %}
 
         </tr>
@@ -50,7 +50,7 @@
             {% if user.presentation is same as (null) %}
             <td>-</td>
             {% else %}
-            <td>{{ user.presentation }}</td>
+            <td>{{ user.presentation|raw }}</td>
             {% endif %}
 
         </tr>
@@ -59,7 +59,7 @@
             {% if user.avatar is same as (null) %}
             <td>-</td>
             {% else %}
-            <td>{{ user.avatar }}</td>
+            <td>{{ user.avatar|raw }}</td>
             {% endif %}
 
         </tr>
